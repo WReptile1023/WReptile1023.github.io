@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="shortcut icon" href="../global-static/images/myAutor.jpg">
+    <title>WR后台管理-短句/文章数据编辑</title>
+</head>
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+<style>
+    body {
+        background: url(../index/bg.jpg) no-repeat fixed;
+        background-size: 100% 100%;
+    }
+</style>
+
+<body>
+    <script src="../global-static/js/vue.js"></script>
+    <script src="../global-static/js/element-index.js"></script>
+    <link rel="stylesheet" href="../global-static/css/element-index.css">
+    <script src="../global-static/js/jquery-1.9.1.min.js"></script>
+
+    <div id="test">
+        <main v-if="isManger">
+            <!-- 导航栏-->
+            <el-menu :default-active="activeIndex1" active-text-color="#ffd04b" background-color="#545c64"
+                class="el-menu-demo" mode="horizontal" text-color="#fff">
+                <el-menu-item index="1"><a href="./m-shortText.html">短句/文章数据管理</a></el-menu-item>
+                <!-- <el-menu-item index="2"><a href="./m-www.html">网址管理</a></el-menu-item> -->
+                <!-- <el-menu-item index="3"><a href="./m-article.html">文章管理</a></el-menu-item> -->
+                <h4 style="color: cyan ;margin-left: 1080px;">
+                    <i class="el-icon-user"></i>
+                    管理员: {{this.curruser.account}}
+                    <button @click="dialogVisible =true;"
+                        style="color: #ffffff;padding: 8px 20px;background: #0091ff;margin-left: 10px; ">本地数据转换导出</button>
+                    <!-- <button @click="getJSONdata"
+                        style="color: #ffffff;padding: 8px 20px;background: #06ea02;margin-left: 10px;">导出数据</button> -->
+                    <a :href="url">
+                        <button @click="goodBayle"
+                            style="color: #ffffff;padding: 8px 20px;background: #ff0004;margin-left: 10px;">退出</button>
+
+                    </a>
+                </h4>
+            </el-menu>
+
+            <!--表格-->
+            <template>
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column align="center" type="selection" width="55">
+                    </el-table-column>
+                    <el-table-column align="center" label="索引" type="index" width="55">
+                    </el-table-column>
+                    <el-table-column align="center" label="ID" prop="id" width="200">
+                    </el-table-column>
+                    <el-table-column align="center" label="标题" prop="title" width="200">
+                    </el-table-column>
+                    <el-table-column align="center" label="日期" prop="date">
+                    </el-table-column>
+                    <el-table-column align="center" label="内容" prop="content">
+                    </el-table-column>
+                </el-table>
+            </template>
+
+
+            <el-dialog title="请输入本地txt文件地址" :visible.sync="dialogVisible" width="30%">
+                <input type="file" id="fileInput" />
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="getJSONdata">确 定</el-button>
+                </span>
+            </el-dialog>
+
+        </main>
+        <footer v-if="isManger" style="font-size: 12px;text-align: center;margin-top: 80px;padding-bottom: 50px;">
+            <a style="text-decoration:none;color: black;" href="../index.html">
+                Copyright© 2024 转载请注明原文链接 WReptile AllRights Reserved.</a>
+            <br>
+            <a href="https://beian.miit.gov.cn/" style="text-decoration:none;color: black;" rel="nofollow">
+                陕ICP备2024021970号</a>
+        </footer>
+
+
+        
+
+
+        <footer v-else style="font-size: 12px;text-align: center;margin-top: 200px;">
+            <h1  style="text-align: center;font-size: 35px;">404 Not Found 抱歉，您没有权限访问！
+            </h1>
+            <a style="text-decoration:none;color: black;margin-top: 400px;display: block;" href="../index.html">
+                Copyright© 2024 转载请注明原文链接 WReptile AllRights Reserved.</a>
+            <br>
+            <a href="https://beian.miit.gov.cn/" style="text-decoration:none;color: black;" rel="nofollow">
+                陕ICP备2024021970号</a>
+        </footer>
+
+    </div>
+    <script>
+        new Vue({
+            el: "#test",
+            mounted() {
+                this.selectAll();
+                this.curraccount = JSON.parse(window.localStorage.getItem("curraccount")).account;
+                this.curruser = JSON.parse(window.localStorage.getItem("curraccount"));
+                if (this.curruser.account === 'WReptile' && this.curruser.password === '20040503') {
+                    this.isManger = true
+                    this.$message({
+                        type: 'success',
+                        message: '管理员WReptile，欢迎您！'
+                    });
+                }
+            },
+            methods: {
+                selectAll() {
+                    $.getJSON(this.localurl, (resp) => {
+                        this.tableData = resp.arrays
+                        this.total = this.dataAll.length;
+                    })
+                },
+                // 退出
+                goodBayle() {
+                    this.url = './login.html'
+                    window.localStorage.setItem('curraccount', '')
+                },
+                // 导出数据
+                getJSONdata() {
+                    this.dialogVisible = false
+                    // 文件处理
+                    var reader = new FileReader();
+                    reader.readAsText(document.getElementById('fileInput').files[0]);
+                    reader.onload = () => {
+                        let s = reader.result
+
+                        // 分段处理
+                        let s1 = s.split("\n\n-------------------------------------------------------------------------------------------------------\n\n\n\n-------------------------------------------------------------------------------------------------------\n")
+                        // console.log(s1)
+
+                        // 首尾数据处理
+                        s1[0] = s1[0].split("-------------------------------------------------------------------------------------------------------\n")[1]
+                        s1.pop()
+
+                        // 日期有问题的索引
+                        let problemIndex = s1.length - 92
+                        // 日期问题处理
+                        for (let index = problemIndex; index < s1.length; index++) {
+                            s1[index] = s1[index].split(/\d{4}年\d{1,2}月\d{1,2}日/)[1]
+                        }
+
+                        // s1[index].split("\n\n")   
+                        // 0 ''  1 时间 2 内容
+                        // 空
+                        // console.log(s1[5].split("\n\n")[0]+"///")
+                        // 只有年月日的日期 
+                        // console.log(s1[5].split("\n\n")[1].split(" ")[0]+"///")
+                        // 内容
+                        // console.log(s1[5].split("\n\n")[2])
+
+                        let lastContent = '{"arrays":['
+
+                        for (let i = 0; i < s1.length; i++) {
+                            if (i < s1.length - 1) {
+                                lastContent = lastContent + `
+                            {
+                                "id":${i + 1},
+                                "title":"简记事",
+                                "content":"${s1[i].split("\n\n")[2]}",
+                                "date":"${s1[i].split("\n\n")[1].split(" ")[0]}"
+                            },
+                            `
+                            } else {
+                                lastContent = lastContent + `
+                            {
+                                "id":${i + 1},
+                                "title":"简记事",
+                                "content":"${s1[i].split("\n\n")[2]}",
+                                "date":"${s1[i].split("\n\n")[1].split(" ")[0]}"
+                            }
+                            `
+                            }
+                        }
+                        lastContent = lastContent + "]}"
+
+                        // 去掉所有空格 保证json换行时格式正确
+                        lastContent = lastContent.replace(/\s/g, "")
+                        // let arr = [lastContent]
+                        // console.log(lastContent)
+                        // console.log(s1)
+
+
+                        // 数据json文件下载
+                        const blob = new Blob([lastContent], {
+                            type: "json/plain;charset=utf-8"
+                        })
+                        const objectURL = URL.createObjectURL(blob)
+                        const aTag = document.createElement('a')
+                        aTag.href = objectURL
+                        aTag.download = "shortText.json"
+                        aTag.click()
+                        URL.revokeObjectURL(objectURL)
+
+                    };
+
+                }
+
+            },
+            data() {
+                return {
+                    dialogVisible: false,
+                    localurl: '../global-static/json/shortText.json',
+                    url: '#',
+                    isManger: false,
+                    curruser: {
+                        account: '',
+                        password: '',
+                    },
+                    curraccount: "account",
+                    // 导航相关
+                    activeIndex1: '1',
+                    activeIndex2: '2',
+                    activeIndex3: '3',
+                    shortText: {
+                        id: '',
+                        title: '',
+                        content: '',
+                        date: ''
+                    },
+                    // 表格数据
+                    tableData: [
+                        {
+                            "id": 1,
+                            "title": "随心",
+                            "content": "我相信你会遇到很好的人，再见！",
+                            "date": "2023-05-07"
+                        },
+                        {
+                            "id": 2,
+                            "title": "随心",
+                            "content": "相信自己，不畏艰难，时时刻刻都要好好过！",
+                            "date": "2023-08-09"
+                        },
+                        {
+                            "id": 3,
+                            "title": "心情日记",
+                            "content": "余生请多指教！",
+                            "date": "2023-06-04"
+                        },
+                    ],
+                }
+            },
+        })
+    </script>
+
+	<!-- 页面特效组件实现---------------------------------- -->
+	<component id="colophon">
+		<!-- 左键气泡特效 -->
+		<canvas id="fireworks" style="position: fixed; left: 0px; top: 0px; pointer-events: none;
+	width: 1528px; height: 755px;"></canvas>
+		<script type="text/javascript" src="../global-static/js/anime.min.js"></script>
+		<script type="text/javascript" src="../global-static/js/fireworks.js"></script>
+
+		<!-- 左键文字特效 -->
+		<script type="text/javascript" src="../global-static/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="../global-static/js/左键文字特效.js"></script>
+
+		<!--自定义鼠标右键-->
+		<link rel="stylesheet" href="../global-static/css/自定义右键开始.css">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+		<script type="text/javascript" src="../global-static/js/自定义右键开始.js"></script>
+		<div class="usercm" style="left: 199px; top: 5px; display: none;">
+			<ul>
+				<li>
+					<a href="../first.html">
+						<i class="fa fa-home fa-fw"></i>
+						<span>首页</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="getSelect();">
+						<i class="fa fa-copy fa-fw"></i>
+						<span>复制</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="baiduSearch();">
+						<i class="fa fa-search fa-fw">
+						</i><span>搜索</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:history.go(1);">
+						<i class="fa fa-arrow-right fa-fw"></i>
+						<span>前进</span></a>
+				</li>
+				<li>
+					<a href="javascript:history.go(-1);">
+						<i class="fa fa-arrow-left fa-fw"></i>
+						<span>后退</span></a>
+				</li>
+				<li style="border-bottom:1px solid gray">
+					<a href="javascript:window.location.reload();">
+						<i class="fa fa-refresh fa-fw"></i>
+						<span>重载网页</span>
+					</a>
+				</li>
+				<li><a href="../messages.html">
+						<i class="fa fa-pencil-square-o fa-fw"></i>
+						<span>给我留言</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 樱花特效 -->
+		<script src="../global-static/js/樱花.js"></script>
+		<!-- 音乐播放器 -->
+		<!-- 数据请求异常，单次请求处理后恢复 -->
+		<!-- <script src="https://musicapi.cenguigui.cn/musicAll/?sortAll=%E7%83%AD%E6%AD%8C%E6%A6%9C"></script> -->
+		<script src="../global-static/js/gui-MusicPlayer.min.js"></script>
+		<div id="gui-MusicPlayer" data-cdnName="https://y.cenguigui.cn/js" data-fadeOutAutoplay
+			data-themeColor="gui-sky" data-random="true">
+		</div>
+	</component>
+
+</body>
+
+</html>

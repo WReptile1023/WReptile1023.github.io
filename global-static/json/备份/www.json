@@ -1,0 +1,28 @@
+{
+    "arrays": [
+        {
+            "oneTitle": "一级分类3",
+            "twoArrays": [
+                {
+                    "twoTitle": "二级分类33",
+                    "addresses": [
+                        {
+                            "name": "网站名",
+                            "url": "网址",
+                            "desc": "描述",
+                            "icon": "./www-collect/images/default.png",
+                            "bgColor": "green"
+                        },
+                        {
+                            "name": "网站名",
+                            "url": "网址",
+                            "desc": "描述",
+                            "icon": "./www-collect/images/default.png",
+                            "bgColor": "red"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

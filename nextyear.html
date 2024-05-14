@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="shortcut icon" href="./global-static/images/myAutor.jpg">
+  <title itemprop="name">WReptileのyou-新年倒计时</title>
+</head>
+<style>
+  body {
+    overflow: hidden;
+    margin: 0;
+  }
+
+  h1 {
+    position: fixed;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+    font-family: 'Love Ya Like A Sister', cursive;
+    font-size: 60px;
+    color: #c70012;
+    padding: 0 20px;
+  }
+
+  h1 span {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 40px;
+  }
+</style>
+
+<body inmaintabuse="1">
+
+  <h1 id="h1">
+    <br>距离2025年还有：<br>236天3小时16分8秒<br>
+    <span>愿我所念的人平安喜乐，
+      <br>愿我所想的事顺心如意。
+      <br>May the people I think of be safe and happy,
+      <br>and may the things I think of be all right.</span>
+  </h1>
+  <canvas width="1536" height="760"></canvas>
+
+  <!-- 主体动态实现 -->
+  <!-- 读取春节 -->
+  <script src="./global-static/js/jquery-1.9.1.min.js"></script>
+  <script>
+    var canvas = document.querySelector("canvas"),
+      ctx = canvas.getContext("2d");
+
+    var ww, wh;
+
+    function onResize() {
+      ww = canvas.width = window.innerWidth;
+      wh = canvas.height = window.innerHeight;
+    }
+
+    ctx.strokeStyle = "red";
+    ctx.shadowBlur = 25;
+    ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+
+    var precision = 100;
+    var hearts = [];
+    var mouseMoved = false;
+    function onMove(e) {
+      mouseMoved = true;
+      if (e.type === "touchmove") {
+        hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+        hearts.push(new Heart(e.touches[0].clientX, e.touches[0].clientY));
+      }
+      else {
+        hearts.push(new Heart(e.clientX, e.clientY));
+        hearts.push(new Heart(e.clientX, e.clientY));
+      }
+    }
+
+    var Heart = function (x, y) {
+      this.x = x || Math.random() * ww;
+      this.y = y || Math.random() * wh;
+      this.size = Math.random() * 2 + 1;
+      this.shadowBlur = Math.random() * 10;
+      this.speedX = (Math.random() + 0.2 - 0.6) * 8;
+      this.speedY = (Math.random() + 0.2 - 0.6) * 8;
+      this.speedSize = Math.random() * 0.05 + 0.01;
+      this.opacity = 1;
+      this.vertices = [];
+      for (var i = 0; i < precision; i++) {
+        var step = (i / precision - 0.5) * (Math.PI * 2);
+        var vector = {
+          x: (15 * Math.pow(Math.sin(step), 3)),
+          y: -(13 * Math.cos(step) - 5 * Math.cos(2 * step) - 2 * Math.cos(3 * step) - Math.cos(4 * step))
+        }
+        this.vertices.push(vector);
+      }
+    }
+
+    Heart.prototype.draw = function () {
+      this.size -= this.speedSize;
+      this.x += this.speedX;
+      this.y += this.speedY;
+      ctx.save();
+      ctx.translate(-1000, this.y);
+      ctx.scale(this.size, this.size);
+      ctx.beginPath();
+      for (var i = 0; i < precision; i++) {
+        var vector = this.vertices[i];
+        ctx.lineTo(vector.x, vector.y);
+      }
+      ctx.globalAlpha = this.size;
+      ctx.shadowBlur = Math.round((3 - this.size) * 10);
+      ctx.shadowColor = "hsla(0, 100%, 60%,0.5)";
+      ctx.shadowOffsetX = this.x + 1000;
+      ctx.globalCompositeOperation = "screen"
+      ctx.closePath();
+      ctx.fill()
+      ctx.restore();
+    };
+
+
+    function render(a) {
+      requestAnimationFrame(render);
+
+      hearts.push(new Heart())
+      ctx.clearRect(0, 0, ww, wh);
+      for (var i = 0; i < hearts.length; i++) {
+        hearts[i].draw();
+        if (hearts[i].size <= 0) {
+          hearts.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+
+    onResize();
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchmove", onMove);
+    window.addEventListener("resize", onResize);
+    requestAnimationFrame(render);
+
+    window.onload = function starttime() {
+
+      $.getJSON('./global-static/json/nextyear.json', (resp) => {
+
+        let curr = new Date().getFullYear()
+        resp.arrays.forEach(e => {
+          if (e.curryear === curr) {
+            time(h1, curr + e.spring, curr);     // 当年春节时间
+          }
+        });
+      })
+
+      ptimer = setTimeout(starttime, 1000); // 添加计时器
+    }
+
+    function time(obj, yearStr, curr) {
+      // 现在时间转换为时间戳
+      var nowtime = new Date().getTime();
+      // 未来时间转换为时间戳
+      var futruetime = new Date(yearStr).getTime();
+      // 毫秒 未来时间-现在时间
+      var msec = futruetime - nowtime;
+      // 毫秒/1000
+      var time = (msec / 1000);
+      // 天  24*60*60*1000 
+      var day = parseInt(time / 86400);
+      // 小时 60*60 总小时数-过去的小时数=现在的小时数 
+      var hour = parseInt(time / 3600) - 24 * day;
+      // 分 -(day*24) 以60秒为一整份 取余 剩下秒数 秒数/60 就是分钟数
+      var minute = parseInt(time % 3600 / 60);
+      // 以60秒为一整份 取余 剩下秒数
+      var second = parseInt(time % 60);
+      obj.innerHTML = "<br>距离" + curr + "年春节还有：<br>" + day + "天" + hour + "小时" + minute + "分" + second + "秒" + "<br><span>愿我所念的人平安喜乐，<br>愿我所想的事顺心如意。<br>May the people I think of be safe and happy, <br>and may the things I think of be all right.</span>"
+      return true;
+    }
+  </script>
+
+  <div id="main">
+    <div style="width:300px; height:120px; margin:100px auto">
+      <audio id="music2" autoplay="autoplay" src="./nextyear/nextyear.mp3" loop="loop"></audio>
+      <a href="javascript:playPause();">
+        <img src="./nextyear/on.png" width="48" height="50" id="music_btn2" alt=""
+          style="top: 10px;right: 10px;position: absolute;"></a>
+    </div>
+  </div>
+
+  <!-- 按钮实现 -->
+  <script>
+    $("#audio_btn").click(function () {
+      var music = document.getElementById("music");
+      if (music.paused) {
+        music.play();
+        $("#music_btn").attr("src", "./nextyear/on.png");
+      } else {
+        music.pause();
+        $("#music_btn").attr("src", "./nextyear/off.png");
+      }
+    });
+
+    function playPause() {
+      var music = document.getElementById('music2');
+      var music_btn = document.getElementById('music_btn2');
+      if (music.paused) {
+        music.play();
+        music_btn.src = './nextyear/on.png';
+      }
+      else {
+        music.pause();
+        music_btn.src = './nextyear/off.png';
+      }
+    }
+  </script>
+
+  <!--自定义鼠标右键-->
+  <link rel="stylesheet" href="./global-static/css/自定义右键开始.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+  <script type="text/javascript" src="./global-static/js/自定义右键开始.js"></script>
+  <div class="usercm" style="left: 199px; top: 5px; display: none;">
+    <ul>
+      <li>
+        <a href="first.html">
+          <i class="fa fa-home fa-fw"></i>
+          <span>首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" onclick="getSelect();">
+          <i class="fa fa-copy fa-fw"></i>
+          <span>复制</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" onclick="baiduSearch();">
+          <i class="fa fa-search fa-fw">
+          </i><span>搜索</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:history.go(1);">
+          <i class="fa fa-arrow-right fa-fw"></i>
+          <span>前进</span></a>
+      </li>
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-arrow-left fa-fw"></i>
+          <span>后退</span></a>
+      </li>
+      <li style="border-bottom:1px solid gray">
+        <a href="javascript:window.location.reload();">
+          <i class="fa fa-refresh fa-fw"></i>
+          <span>重载网页</span>
+        </a>
+      </li>
+      <li><a href="messages.html">
+          <i class="fa fa-pencil-square-o fa-fw"></i>
+          <span>给我留言</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</body>
+
+</html>
