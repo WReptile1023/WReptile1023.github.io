@@ -1,0 +1,22 @@
+.site-top ul {
+    opacity: 1 !important;
+}
+
+.site-top .show-nav {
+    display: none !important;
+}
+
+@media (max-width:1080px) {
+    #centerbg {
+        display: block;
+        height: 500px;
+    }
+}
+
+.wedonate img {
+    margin-right: 10px
+}
+
+.cd-top {
+    background: url(../images/goTop.png) no-repeat center 50%
+}

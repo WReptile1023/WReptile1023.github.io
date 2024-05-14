@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="shortcut icon" href="../global-static/images/myAutor.jpg">
+    <title itemprop="name">WReptileのyou-后台登录</title>
+</head>
+<style>
+    body {
+        background: url(../index/bg.jpg) no-repeat fixed;
+        background-size: 100% 100%;
+    }
+
+    .fu {
+        /* width: 1920px; */
+        /* height: 1080px; */
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .demo-ruleForm {
+        width: 400px;
+        margin-top: 100px;
+        margin-left: 900px;
+    }
+
+    h1 {
+        margin-left: 200px;
+        margin-top: 50px;
+        font-size: 50px;
+        display: block;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+</style>
+
+<body>
+    <script src="../global-static/js/vue.js"></script>
+    <script src="../global-static/js/element-index.js"></script>
+    <link rel="stylesheet" href="../global-static/css/element-index.css">
+
+    <div class="fu" id="app">
+        <h1>WReptileのyou后台管理系统</h1>
+        <el-form :model="user" class="demo-ruleForm" label-width="100px" :rules="rules" ref="user">
+            <el-form-item label="账户" prop="account">
+                <el-input type="text" v-model="user.account"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model="user.password"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <button style="color: #ffffff;padding: 8px 30px;background: #06ea02;border: #06ea02 5px solid;"
+                    @click="login" type="primary"><a :href="url">登 录</a></button>
+            </el-form-item>
+        </el-form>
+        <el-form style="font-size: 12px;text-align: center;margin-top: 300px;">
+            <a style="text-decoration:none;color: black;" href="../index.html">
+                Copyright© 2024 转载请注明原文链接 WReptile AllRights Reserved.</a>
+            <br>
+            <a href="https://beian.miit.gov.cn/" style="text-decoration:none;color: black;" rel="nofollow">
+                陕ICP备2024021970号</a>
+        </el-form>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            mounted() {
+                window.localStorage.removeItem("curraccount")
+            },
+            data() {
+                var accountV = (rule, value, callback) => {
+                    if (value === '') {
+                        callback(new Error('请输入账户名'));
+                    } else if (value !== 'WReptile') {
+                        callback(new Error('账户名有误，请重新输入'));
+                    }
+                };
+                var passwordV = (rule, value, callback) => {
+                    if (value === '') {
+                        callback(new Error('请输入密码'));
+                    } else if (value !== '20040503') {
+                        callback(new Error('密码有误，请重新输入'));
+                    }
+                };
+                return {
+                    url: './m-shortText.html',
+                    user: {
+                        account: '',
+                        password: ''
+                    },
+                    // 规则数据对象
+                    rules: {
+                        account: [
+                            { validator: accountV, trigger: 'blur' }
+                        ],
+                        password: [
+                            { validator: passwordV, trigger: 'blur' }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                login() {
+                    // if (this.user.account === 'WReptile' && this.user.password === '20040503') {
+                    // this.url = './m-shortText.html'
+                    window.localStorage.setItem("curraccount", JSON.stringify(this.user))
+                    this.user.account = ''
+                    this.user.password = ''
+                    // this.$message({
+                    //     type: 'success',
+                    //     message: '登录成功!'
+                    // });
+                    // } else {
+                    //     this.$message({
+                    //         type: 'error',
+                    //         message: '密码或账号有误!'
+                    //     });
+                    // }
+
+                }
+            }
+        })
+    </script>
+    
+	<!-- 页面特效组件实现---------------------------------- -->
+	<component id="colophon">
+		<!-- 左键气泡特效 -->
+		<canvas id="fireworks" style="position: fixed; left: 0px; top: 0px; pointer-events: none;
+	width: 1528px; height: 755px;"></canvas>
+		<script type="text/javascript" src="../global-static/js/anime.min.js"></script>
+		<script type="text/javascript" src="../global-static/js/fireworks.js"></script>
+
+		<!-- 左键文字特效 -->
+		<script type="text/javascript" src="../global-static/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="../global-static/js/左键文字特效.js"></script>
+
+		<!--自定义鼠标右键-->
+		<link rel="stylesheet" href="../global-static/css/自定义右键开始.css">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+		<script type="text/javascript" src="../global-static/js/自定义右键开始.js"></script>
+		<div class="usercm" style="left: 199px; top: 5px; display: none;">
+			<ul>
+				<li>
+					<a href="../first.html">
+						<i class="fa fa-home fa-fw"></i>
+						<span>首页</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="getSelect();">
+						<i class="fa fa-copy fa-fw"></i>
+						<span>复制</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="baiduSearch();">
+						<i class="fa fa-search fa-fw">
+						</i><span>搜索</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:history.go(1);">
+						<i class="fa fa-arrow-right fa-fw"></i>
+						<span>前进</span></a>
+				</li>
+				<li>
+					<a href="javascript:history.go(-1);">
+						<i class="fa fa-arrow-left fa-fw"></i>
+						<span>后退</span></a>
+				</li>
+				<li style="border-bottom:1px solid gray">
+					<a href="javascript:window.location.reload();">
+						<i class="fa fa-refresh fa-fw"></i>
+						<span>重载网页</span>
+					</a>
+				</li>
+				<li><a href="../messages.html">
+						<i class="fa fa-pencil-square-o fa-fw"></i>
+						<span>给我留言</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 樱花特效 -->
+		<script src="../global-static/js/樱花.js"></script>
+		<!-- 音乐播放器 -->
+		<!-- 数据请求异常，单次请求处理后恢复 -->
+		<!-- <script src="https://musicapi.cenguigui.cn/musicAll/?sortAll=%E7%83%AD%E6%AD%8C%E6%A6%9C"></script> -->
+		<script src="../global-static/js/gui-MusicPlayer.min.js"></script>
+		<div id="gui-MusicPlayer" data-cdnName="https://y.cenguigui.cn/js" data-fadeOutAutoplay
+			data-themeColor="gui-sky" data-random="true">
+		</div>
+	</component>
+</body>
+
+</html>

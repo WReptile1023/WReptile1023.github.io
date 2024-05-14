@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-transform">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+	<link rel="shortcut icon" href="../global-static/images/myAutor.jpg">
+  <link rel="stylesheet" href="css/prism.css">
+  <style>
+    html,
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-size: 12px;
+    }
+
+    body {
+      min-height: 500px;
+    }
+
+    section {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .code {
+      margin-top: 3px;
+    }
+
+    pre[class*=language-] {
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      border-top: 2px solid #ccc;
+      width: 100%;
+      height: 65%;
+      min-height: 200px;
+    }
+  </style>
+  <title>Leetcode 283 - 移动零</title>
+</head>
+
+<body>
+  <section class="frames"></section>
+  <section style="display: none;">
+    <pre><code class="language-java">int factorial(int n) {
+    if (n == 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}</code></pre>
+  </section>
+  <main></main>
+  <section>
+    <div style='background-color:#00FF99; margin: 2px 2px 0 0; padding: 4px 6px;'>进行中</div>
+    <div style='background-color:#7df4f2; margin: 2px 2px 0 0; padding: 4px 6px;'>已结束</div>
+  </section>
+  <div style='margin: 2px 2px 0 0; padding: 4px 6px;'>
+    <span>动画速度(ms)&nbsp;</span><input type="number" step="100" value="300" id="animate_speed" class="saveable">
+    <input style='font-size:12px;' type="button" value="保存" onclick="onSave('leetcode_283')">
+  </div>
+  <script src="js/p5.js"></script>
+  <script src="js/p5-svg.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/prism.js"></script>
+  <script>
+    const options = loadOptionsFromStorage('leetcode_283')
+    const RECT_WIDTH = 30                 // 矩形宽度、圆直径
+    const RECT_HEIGHT = 20                // 值矩形高度
+    const d = new Draw(options.animate_speed)
+    const myArray = [0, 1, 0, 3, 12]
+
+    function setup() {
+      const WIN_WIDTH = document.querySelector('main').clientWidth
+      const WIN_HEIGHT = document.querySelector('main').clientHeight
+      const FONT_SIZE = 16
+      createCanvas(WIN_WIDTH, WIN_HEIGHT, SVG)
+      textSize(FONT_SIZE)
+      textAlign(CENTER)
+      moveZeroes()
+      d.updateFrameButtons()
+      noStroke()
+    }
+    function draw() {
+      d.draw(() => background('#eee'), () => true)
+    }
+    function frame({ cloned }) {
+      drawTree(cloned)
+    }
+
+    function drawTree(node) {
+      if (node) {
+        const startX = width / 2 - myArray.length / 2 * RECT_WIDTH
+        const startY = height - 100
+        let x = startX
+        let y = startY
+        for (let i = 0; i < node.array.length; i++) {
+          stroke('black')
+          if (i == node.i || i == node.j) {
+            fill('rgba(0,255,0,.5)')
+          } else {
+            fill('white')
+          }
+          rect(x, y, RECT_WIDTH, RECT_HEIGHT)
+          noStroke()
+          fill('black')
+          text(node.array[i], x + RECT_WIDTH / 2, y + RECT_HEIGHT / 2 + 5)
+          x += RECT_WIDTH
+        }
+
+        x = startX
+        y = startY
+        noStroke()
+        fill('red')
+        text("i", x + node.i * RECT_WIDTH + RECT_WIDTH / 2, y + RECT_HEIGHT + 16)
+        text("j", x + node.j * RECT_WIDTH + RECT_WIDTH / 2, y + RECT_HEIGHT + 32)
+      }
+
+    }
+
+    function moveZeroes() {
+      let i = 0
+      let j = 0
+      while (j < myArray.length) {
+        d.add({ cloned: clone({ array: myArray, i, j }) }, frame)
+        if (myArray[j] != 0) {
+          const t = myArray[j]
+          myArray[j] = myArray[i]
+          myArray[i] = t
+          d.add({ cloned: clone({ array: myArray, i, j }) }, frame)
+          i++
+        }
+        j++
+      }
+      d.add({ cloned: clone({ array: myArray, i, j }) }, frame)
+    }
+
+    function clone(tree) {
+      return JSON.parse(JSON.stringify(tree))
+    }
+
+  </script>
+</body>
+
+</html>
