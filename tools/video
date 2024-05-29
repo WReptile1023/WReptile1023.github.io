@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看电影吧</title>
+</head>
+<style>
+    body {
+        text-align: center;
+        color: rgb(32, 191, 0);
+        font-size: 35px;
+        background: url('https://file.moyublog.com/free_wallpapers_files/ueefygrrlin.gif');
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 25px;
+        transition: transform .2s;
+        color: rgb(0, 166, 255);
+    }
+
+    div div {
+        width: 500px;
+        height: 500px;
+        background-color: rgba(255, 255, 251, 0.5);
+        float: inline-start;
+        margin: 100px;
+        transition: transform .2s;
+    }
+
+    div div:hover {
+        transform: scale(1.1);
+    }
+
+    a:hover {
+        color: rgb(255, 0, 183);
+        font-size: 28px;
+    }
+
+    .bb {
+        margin: 0 auto;
+        width: 1400px;
+    }
+</style>
+
+<body>
+    <div class="bb">
+        <div>
+            <h2>影视平台</h2>
+            <a href="https://youku.com/channel/webmovie/list?filter=type_%E7%94%B5%E5%BD%B1&spm=a2hja.14919748_WEBMOVIE_JINGXUAN.drawer3.d_sort_1"
+                target="_blank">优酷</a><br>
+            <a href="https://v.qq.com/channel/movie/list?filter_params=sort%3D75&page_id=channel_list_second_page&channel_id=100173"
+                target="_blank">腾讯</a><br>
+            <a href="https://www.iqiyi.com/movie/" target="_blank">爱奇艺</a><br>
+            <a href="https://www.bilibili.com/">哔哩哔哩</a>
+        </div>
+
+        <div>
+            <h2>解析网站</h2>
+            <a href="https://timecn.cn" target="_blank">全民解析</a><br>
+            <a href="https://svip.bljiex.cc" target="_blank">BL影视解析</a>
+        </div>
+    </div>
+</body>
+
+</html>
