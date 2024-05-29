@@ -1,11 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>看电影吧</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="shortcut icon" href="../global-static/images/myAutor.jpg">
+    <title itemprop="name">WReptileのyou-看电影吧</title>
 </head>
 <style>
     body {
@@ -47,6 +51,7 @@
 </style>
 
 <body>
+    <!-- 主体 -->
     <div class="bb">
         <div>
             <h2>影视平台</h2>
@@ -64,6 +69,75 @@
             <a href="https://svip.bljiex.cc" target="_blank">BL影视解析</a>
         </div>
     </div>
+
+    <!-- 页面特效组件实现---------------------------------- -->
+    <component id="colophon">
+        <!-- 左键气泡特效 -->
+        <canvas id="fireworks" style="position: fixed; left: 0px; top: 0px; pointer-events: none;
+	width: 1528px; height: 755px;"></canvas>
+        <script type="text/javascript" src="../global-static/js/anime.min.js"></script>
+        <script type="text/javascript" src="./global-static/js/fireworks.js"></script>
+
+        <!-- 左键文字特效 -->
+        <script type="text/javascript" src="../global-static/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="../global-static/js/左键文字特效.js"></script>
+
+        <!--自定义鼠标右键-->
+        <link rel="stylesheet" href="../global-static/css/自定义右键开始.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+        <script type="text/javascript" src="../global-static/js/自定义右键开始.js"></script>
+        <div class="usercm" style="left: 199px; top: 5px; display: none;">
+            <ul>
+                <li>
+                    <a href="../first.html">
+                        <i class="fa fa-home fa-fw"></i>
+                        <span>首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" onclick="getSelect();">
+                        <i class="fa fa-copy fa-fw"></i>
+                        <span>复制</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" onclick="baiduSearch();">
+                        <i class="fa fa-search fa-fw">
+                        </i><span>搜索</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:history.go(1);">
+                        <i class="fa fa-arrow-right fa-fw"></i>
+                        <span>前进</span></a>
+                </li>
+                <li>
+                    <a href="javascript:history.go(-1);">
+                        <i class="fa fa-arrow-left fa-fw"></i>
+                        <span>后退</span></a>
+                </li>
+                <li style="border-bottom:1px solid gray">
+                    <a href="javascript:window.location.reload();">
+                        <i class="fa fa-refresh fa-fw"></i>
+                        <span>重载网页</span>
+                    </a>
+                </li>
+                <li><a href="../messages.html">
+                        <i class="fa fa-pencil-square-o fa-fw"></i>
+                        <span>给我留言</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 樱花特效 -->
+        <script src="../global-static/js/樱花.js"></script>
+        <!-- 音乐播放器 -->
+        <script src="../global-static/js/gui-MusicPlayer.min.js"></script>
+        <div id="gui-MusicPlayer" data-cdnName="https://y.cenguigui.cn/js" data-fadeOutAutoplay
+            data-themeColor="gui-sky" data-random="true">
+        </div>
+    </component>
 </body>
 
 </html>
