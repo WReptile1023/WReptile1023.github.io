@@ -208,16 +208,27 @@
                     let result = resp.arrays
                     var content = ''
                     result.forEach(e => {
-                        content = content + `
+                    //     content = content + `
+                    //     <div class="note" >
+                    //     <h3>${e.name}</h3>
+                    //     `
+                    //     e.arr.forEach(o => {
+                    //         content = content + `
+                    // <p>📄<a href="./studynote/${o}">${o}</a></p>
+                    //     `
+                    //     })
+                    //     content = content + '</div>'
+			    // 一下采用github资源访问
+		        content = content + `
                         <div class="note" >
                         <h3>${e.name}</h3>
                         `
                         e.arr.forEach(o => {
                             content = content + `
-                    <p>📄<a href="./studynote/${o}">${o}</a></p>
+                    <p>📄<a href="https://github.com/WReptile1023/WReptile1023.github.io/blob/master/studynote/${o}">${o}</a></p>
                         `
                         })
-                        content = content + '</div>'
+                        content = content + '</div>'  
                     });
                     document.getElementById('WReptileContent').innerHTML = content
                 })
