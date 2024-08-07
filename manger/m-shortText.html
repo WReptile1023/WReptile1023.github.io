@@ -83,7 +83,7 @@
             <el-dialog title="请输入本地txt文件地址" :visible.sync="dialogVisible_txt" width="30%">
                 <input type="file" id="fileInput" />
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button @click="dialogVisible_txt = false">取 消</el-button>
                     <el-button type="primary" @click="getTextdata">确 定</el-button>
                 </span>
             </el-dialog>
