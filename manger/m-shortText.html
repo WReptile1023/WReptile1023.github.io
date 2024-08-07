@@ -37,11 +37,13 @@
                 <el-menu-item index="1"><a href="./m-shortText.html">短句/文章数据管理</a></el-menu-item>
                 <!-- <el-menu-item index="2"><a href="./m-www.html">网址管理</a></el-menu-item> -->
                 <!-- <el-menu-item index="3"><a href="./m-article.html">文章管理</a></el-menu-item> -->
-                <h4 style="color: cyan ;margin-left: 1080px;">
+                <h4 style="color: cyan ;margin-left: 900px;">
                     <i class="el-icon-user"></i>
                     管理员: {{this.curruser.account}}
                     <button @click="dialogVisible =true;"
-                        style="color: #ffffff;padding: 8px 20px;background: #0091ff;margin-left: 10px; ">本地数据转换导出</button>
+                        style="color: #ffffff;padding: 8px 20px;background: #0091ff;margin-left: 10px; ">本地数据JSON导出</button>
+                    <button @click="dialogVisible_txt =true;"
+                        style="color: #ffffff;padding: 8px 20px;background: #0091ff;margin-left: 10px; ">本地数据TXT导出</button>
                     <!-- <button @click="getJSONdata"
                         style="color: #ffffff;padding: 8px 20px;background: #06ea02;margin-left: 10px;">导出数据</button> -->
                     <a :href="url">
@@ -78,6 +80,13 @@
                     <el-button type="primary" @click="getJSONdata">确 定</el-button>
                 </span>
             </el-dialog>
+            <el-dialog title="请输入本地txt文件地址" :visible.sync="dialogVisible_txt" width="30%">
+                <input type="file" id="fileInput" />
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="getTextdata">确 定</el-button>
+                </span>
+            </el-dialog>
 
         </main>
         <footer v-if="isManger" style="font-size: 12px;text-align: center;margin-top: 80px;padding-bottom: 50px;">
@@ -89,11 +98,11 @@
         </footer>
 
 
-        
+
 
 
         <footer v-else style="font-size: 12px;text-align: center;margin-top: 200px;">
-            <h1  style="text-align: center;font-size: 35px;">404 Not Found 抱歉，您没有权限访问！
+            <h1 style="text-align: center;font-size: 35px;">404 Not Found 抱歉，您没有权限访问！
             </h1>
             <a style="text-decoration:none;color: black;margin-top: 400px;display: block;" href="../index.html">
                 Copyright© 2024 转载请注明原文链接 WReptile AllRights Reserved.</a>
@@ -208,12 +217,60 @@
 
                     };
 
+                },
+                getTextdata() {
+                    this.dialogVisible_txt = false
+                    // 文件处理
+                    var reader = new FileReader();
+                    reader.readAsText(document.getElementById('fileInput').files[0]);
+                    reader.onload = () => {
+                        let s = reader.result
+
+                        // 分段处理
+                        let s1 = s.split("\n\n-------------------------------------------------------------------------------------------------------\n\n\n\n-------------------------------------------------------------------------------------------------------\n")
+                        // console.log(s1)
+
+                        // 首尾数据处理
+                        s1[0] = s1[0].split("-------------------------------------------------------------------------------------------------------\n")[1]
+                        s1.pop()
+
+                        // 日期有问题的索引
+                        let problemIndex = s1.length - 92
+                        // 日期问题处理
+                        for (let index = problemIndex; index < s1.length; index++) {
+                            s1[index] = s1[index].split(/\d{4}年\d{1,2}月\d{1,2}日/)[1]
+                        }
+
+                        let lastContent = `总条数：${s1.length}\n`
+
+                        for (let i = 0; i < s1.length; i++) {
+                            if (i < s1.length) {
+                                lastContent = lastContent + `
+        ${s1[i].split("\n\n")[2]}                           --${s1[i].split("\n\n")[1].split(" ")[0]}\n
+    `
+                            }
+                        }
+
+                        // 数据txt文件下载
+                        const blob = new Blob([lastContent], {
+                            type: "txt/plain;charset=utf-8"
+                        })
+                        const objectURL = URL.createObjectURL(blob)
+                        const aTag = document.createElement('a')
+                        aTag.href = objectURL
+                        aTag.download = "shortText-media.txt"
+                        aTag.click()
+                        URL.revokeObjectURL(objectURL)
+
+                    };
+
                 }
 
             },
             data() {
                 return {
                     dialogVisible: false,
+                    dialogVisible_txt: false,
                     localurl: '../global-static/json/shortText.json',
                     url: '#',
                     isManger: false,
@@ -258,76 +315,76 @@
         })
     </script>
 
-	<!-- 页面特效组件实现---------------------------------- -->
-	<component id="colophon">
-		<!-- 左键气泡特效 -->
-		<canvas id="fireworks" style="position: fixed; left: 0px; top: 0px; pointer-events: none;
+    <!-- 页面特效组件实现---------------------------------- -->
+    <component id="colophon">
+        <!-- 左键气泡特效 -->
+        <canvas id="fireworks" style="position: fixed; left: 0px; top: 0px; pointer-events: none;
 	width: 1528px; height: 755px;"></canvas>
-		<script type="text/javascript" src="../global-static/js/anime.min.js"></script>
-		<script type="text/javascript" src="../global-static/js/fireworks.js"></script>
+        <script type="text/javascript" src="../global-static/js/anime.min.js"></script>
+        <script type="text/javascript" src="../global-static/js/fireworks.js"></script>
 
-		<!-- 左键文字特效 -->
-		<script type="text/javascript" src="../global-static/js/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="../global-static/js/左键文字特效.js"></script>
+        <!-- 左键文字特效 -->
+        <script type="text/javascript" src="../global-static/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="../global-static/js/左键文字特效.js"></script>
 
-		<!--自定义鼠标右键-->
-		<link rel="stylesheet" href="../global-static/css/自定义右键开始.css">
-		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-		<script type="text/javascript" src="../global-static/js/自定义右键开始.js"></script>
-		<div class="usercm" style="left: 199px; top: 5px; display: none;">
-			<ul>
-				<li>
-					<a href="../first.html">
-						<i class="fa fa-home fa-fw"></i>
-						<span>首页</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="getSelect();">
-						<i class="fa fa-copy fa-fw"></i>
-						<span>复制</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="baiduSearch();">
-						<i class="fa fa-search fa-fw">
-						</i><span>搜索</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:history.go(1);">
-						<i class="fa fa-arrow-right fa-fw"></i>
-						<span>前进</span></a>
-				</li>
-				<li>
-					<a href="javascript:history.go(-1);">
-						<i class="fa fa-arrow-left fa-fw"></i>
-						<span>后退</span></a>
-				</li>
-				<li style="border-bottom:1px solid gray">
-					<a href="javascript:window.location.reload();">
-						<i class="fa fa-refresh fa-fw"></i>
-						<span>重载网页</span>
-					</a>
-				</li>
-				<li><a href="../messages.html">
-						<i class="fa fa-pencil-square-o fa-fw"></i>
-						<span>给我留言</span>
-					</a>
-				</li>
-			</ul>
-		</div>
+        <!--自定义鼠标右键-->
+        <link rel="stylesheet" href="../global-static/css/自定义右键开始.css">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+        <script type="text/javascript" src="../global-static/js/自定义右键开始.js"></script>
+        <div class="usercm" style="left: 199px; top: 5px; display: none;">
+            <ul>
+                <li>
+                    <a href="../first.html">
+                        <i class="fa fa-home fa-fw"></i>
+                        <span>首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" onclick="getSelect();">
+                        <i class="fa fa-copy fa-fw"></i>
+                        <span>复制</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" onclick="baiduSearch();">
+                        <i class="fa fa-search fa-fw">
+                        </i><span>搜索</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:history.go(1);">
+                        <i class="fa fa-arrow-right fa-fw"></i>
+                        <span>前进</span></a>
+                </li>
+                <li>
+                    <a href="javascript:history.go(-1);">
+                        <i class="fa fa-arrow-left fa-fw"></i>
+                        <span>后退</span></a>
+                </li>
+                <li style="border-bottom:1px solid gray">
+                    <a href="javascript:window.location.reload();">
+                        <i class="fa fa-refresh fa-fw"></i>
+                        <span>重载网页</span>
+                    </a>
+                </li>
+                <li><a href="../messages.html">
+                        <i class="fa fa-pencil-square-o fa-fw"></i>
+                        <span>给我留言</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-		<!-- 樱花特效 -->
-		<script src="../global-static/js/樱花.js"></script>
-		<!-- 音乐播放器 -->
-		<!-- 数据请求异常，单次请求处理后恢复 -->
-		<!-- <script src="https://musicapi.cenguigui.cn/musicAll/?sortAll=%E7%83%AD%E6%AD%8C%E6%A6%9C"></script> -->
-		<script src="../global-static/js/gui-MusicPlayer.min.js"></script>
-		<div id="gui-MusicPlayer" data-cdnName="https://y.cenguigui.cn/js" data-fadeOutAutoplay
-			data-themeColor="gui-sky" data-random="true">
-		</div>
-	</component>
+        <!-- 樱花特效 -->
+        <script src="../global-static/js/樱花.js"></script>
+        <!-- 音乐播放器 -->
+        <!-- 数据请求异常，单次请求处理后恢复 -->
+        <!-- <script src="https://musicapi.cenguigui.cn/musicAll/?sortAll=%E7%83%AD%E6%AD%8C%E6%A6%9C"></script> -->
+        <script src="../global-static/js/gui-MusicPlayer.min.js"></script>
+        <div id="gui-MusicPlayer" data-cdnName="https://y.cenguigui.cn/js" data-fadeOutAutoplay
+            data-themeColor="gui-sky" data-random="true">
+        </div>
+    </component>
 
 </body>
 
