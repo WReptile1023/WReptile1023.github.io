@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WR考勤数据分析系统</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 8px;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .upload-item {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .file-info {
+            flex-grow: 1;
+        }
+        
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .file-status {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-process {
+            background-color: var(--success-color);
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .btn-process:hover {
+            background-color: #27ae60;
+        }
+        
+        .progress-container {
+            margin: 25px 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .status-text {
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .info-section {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .info-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .info-content {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .info-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .example-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            border-top: 1px solid var(--light-color);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-uploaded {
+            color: var(--success-color);
+        }
+        
+        .error {
+            color: var(--danger-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WR考勤数据分析系统</h1>
+            <p class="subtitle">本系统开发于2025年11月，旨在高效处理考勤数据，生成统计报表</p>
+        </header>
+        
+        <div class="content">
+            <div class="upload-section">
+                <h2 class="section-title">文件上传</h2>
+                
+                <div class="file-upload">
+                    <div class="upload-item">
+                        <div class="file-info">
+                            <div class="file-name" id="studentFileName">未选择学生名单文件</div>
+                            <div class="file-status" id="studentFileStatus">请上传包含学号和姓名的学生名单文件</div>
+                        </div>
+                        <button class="btn" id="studentFileBtn">选择学生名单</button>
+                        <input type="file" id="studentFileInput" class="file-input" accept=".txt">
+                    </div>
+                    
+                    <div class="upload-item">
+                        <div class="file-info">
+                            <div class="file-name" id="attendanceFileName">未选择考勤文件</div>
+                            <div class="file-status" id="attendanceFileStatus">请上传考勤记录文件</div>
+                        </div>
+                        <button class="btn" id="attendanceFileBtn">选择考勤文件</button>
+                        <input type="file" id="attendanceFileInput" class="file-input" accept=".txt">
+                    </div>
+                </div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress" id="progressBar"></div>
+                    </div>
+                    <div class="status-text" id="statusText">正在处理...</div>
+                </div>
+                
+                <button class="btn btn-process" id="processBtn" disabled>生成统计表格</button>
+            </div>
+            
+            <div class="info-section">
+                <h3 class="info-title">使用说明</h3>
+                <div class="info-content">
+                    <p>1. 请先选择学生名单文件（具体格式参照示例）</p>
+                    <p>2. 然后选择考勤文件</p>
+                    <p>3. 点击生成统计表格</p>
+                    <p>4. 下载生成的Excel文件</p>
+                    <p>5. Excel文件包含管理版、教师版两个报表</p>
+                    
+                    <br>
+                    <p>注：可使用AI工具将数据文件处理为标准格式后，查看内容是否完整，再进行数据分析即可</p>
+                    
+                    <h4 style="margin-top: 15px;">学生名单文件示例：</h4>
+                    <div class="example-box"><p>
+                        <b>计科三班学号学生名单.txt</b><br><br>
+                        每行一个学生，格式：<br>
+                        学号,姓名<br><br>
+                        2024001,张哈哈<br>
+                        2024002,王哈哈<br>
+                        2024003,李哈<br></p>
+                    </div>
+                    
+                    <h4 style="margin-top: 15px;">考勤记录文件示例：</h4>
+                    <div class="example-box"><p>
+                        <b>计科三班考勤统计.txt</b><br><br>
+                        每节课一个区块，格式如下：<br>
+                        日期 节次 科目<br>
+                        考勤记录<br><br>
+
+                        09月01日 12节 软工<br>
+                        请假 王哈哈（第2节）<br>
+                        迟到 张哈哈<br>
+                        旷课 李哈<br><br>
+                        09月17日 00节 英语<br>
+                        请假 王哈哈 李哈<br><br>
+                        </p>
+                    </div>
+                    
+                    <h4 style="margin-top: 15px;">统计规则：</h4>
+                    <ul class="info-list">
+                        <li>请假：每次计2课时，若名字后面有（第+数字+节）则记1课时</li>
+                        <li>迟到：每次计1课时</li>
+                        <li>旷课：同请假规则</li>
+                        <li>最终旷课学时 = 共计旷课时长 + 共计迟到数/3（保留两位小数）</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 15px;">科目节次说明：</h4>
+                    <p>科目说明：系统会自行分析考勤记录文件中的科目</p>
+                    <p>节次说明：00节（表示早自习）、12节、34节、56节、78节、910节</p>
+
+                    <h4 style="margin-top: 15px;">排序规则：</h4>
+                    <p>科目排序：按考勤记录文件中的科目拼音顺序排序</p>
+                    <p>学生排序：按学生名单文件中的学生顺序排序</p>
+
+                    <h4 style="margin-top: 15px;">AI格式化数据参考话语模型</h4>
+                    <div class="example-box">
+<p>
+提取附件<计科三班考勤统计.txt>内容，按照以下格式再输出（直接输出内容，不必写代码）：
+<br><br>
+1/ 节次包括00节（等同于早自习）、12节、34节、56节、78节、910节<br>
+2/ 每节课一个区块，格式如下：<br>
+日期 节次 科目<br>
+考勤记录<br><br>
+
+09月05日 34节 linux<br>
+迟到 王哈哈<br><br>
+
+09月05日 56节 py<br>
+请假 王哈哈<br><br>
+
+09月22日 34节 数据结构<br>
+请假 张哈哈（第3节）<br>
+迟到 李哈<br>
+旷课 宋哈 梁哈哈<br><br>
+
+其他说明：<br>
+09月05日 12节 linux 56节 py 78910节 国安<br>
+请假 王哈哈（第六节）<br>
+分解为：<br>
+09月05日 12节 linux<br>
+请假 王哈哈<br><br>
+
+09月05日 56节 py<br>
+请假 王哈哈（第6节）<br>
+
+09月05日 78节 国安<br>
+请假 王哈哈<br><br>
+
+09月05日 910节 国安<br>
+请假 王哈哈<br><br>
+
+关于输出<br>
+1/ 输出时记录时按照请假、迟到、旷课依次输出，并转换 第+汉字数字+节 为 第+阿拉伯数/字+节 eg：第六节为第6节<br>
+2/ 单独输出记录中出现的所有科目<br>
+3/ 单独输出数据不全的记录对应的日期，如：缺少节次、科目、日期等（保持原数据不变，只需统计日期输出）<br>
+
+<br>
+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>WR考勤数据分析系统2.0 &copy; 2025-2026 | 版权所有 违者必究</p>
+        </footer>
+    </div>
+<script src="./WR_ADSS/WR_ADSS_xlsx.full.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> -->
+    <script>
+        // 全局变量
+        let studentFile = null;
+        let attendanceFile = null;
+        let students = [];
+        let studentIdMap = {};
+        
+        // DOM元素
+        const studentFileInput = document.getElementById('studentFileInput');
+        const attendanceFileInput = document.getElementById('attendanceFileInput');
+        const studentFileBtn = document.getElementById('studentFileBtn');
+        const attendanceFileBtn = document.getElementById('attendanceFileBtn');
+        const studentFileName = document.getElementById('studentFileName');
+        const attendanceFileName = document.getElementById('attendanceFileName');
+        const studentFileStatus = document.getElementById('studentFileStatus');
+        const attendanceFileStatus = document.getElementById('attendanceFileStatus');
+        const processBtn = document.getElementById('processBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('statusText');
+        
+        // 事件监听
+        studentFileBtn.addEventListener('click', () => studentFileInput.click());
+        attendanceFileBtn.addEventListener('click', () => attendanceFileInput.click());
+        
+        studentFileInput.addEventListener('change', handleStudentFileSelect);
+        attendanceFileInput.addEventListener('change', handleAttendanceFileSelect);
+        processBtn.addEventListener('click', processData);
+        
+        // 处理学生名单文件选择
+        function handleStudentFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            studentFile = file;
+            studentFileName.textContent = file.name;
+            studentFileStatus.textContent = "文件已选择";
+            studentFileStatus.className = "file-status file-uploaded";
+            
+            checkReadyState();
+        }
+        
+        // 处理考勤文件选择
+        function handleAttendanceFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            attendanceFile = file;
+            attendanceFileName.textContent = file.name;
+            attendanceFileStatus.textContent = "文件已选择";
+            attendanceFileStatus.className = "file-status file-uploaded";
+            
+            checkReadyState();
+        }
+        
+        // 检查是否准备好处理
+        function checkReadyState() {
+            if (studentFile && attendanceFile) {
+                processBtn.disabled = false;
+            } else {
+                processBtn.disabled = true;
+            }
+        }
+        
+        // 处理数据
+        async function processData() {
+            if (!studentFile || !attendanceFile) {
+                alert("请先选择学生名单文件和考勤文件");
+                return;
+            }
+            
+            try {
+                // 显示进度条
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                statusText.textContent = "正在加载学生名单...";
+                processBtn.disabled = true;
+                
+                // 加载学生名单
+                await loadStudentList(studentFile);
+                
+                // 解析考勤数据
+                statusText.textContent = "正在解析考勤数据...";
+                progressBar.style.width = '30%';
+                
+                const attendanceData = await parseAttendanceFile(attendanceFile);
+                
+                if (!attendanceData || attendanceData.length === 0) {
+                    throw new Error("未找到有效的考勤数据");
+                }
+                
+                // 生成管理统计表
+                statusText.textContent = "正在生成管理统计表...";
+                progressBar.style.width = '60%';
+                
+                const managementData = createManagementTable(attendanceData);
+                
+                // 生成教师统计表
+                statusText.textContent = "正在生成教师统计表...";
+                progressBar.style.width = '80%';
+                
+                const teacherData = createTeacherTable(attendanceData);
+                
+                // 保存Excel文件
+                statusText.textContent = "正在生成Excel文件...";
+                progressBar.style.width = '90%';
+                
+                await saveExcelFiles(managementData, teacherData);
+                
+                // 完成
+                progressBar.style.width = '100%';
+                statusText.textContent = "处理完成！";
+                
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    processBtn.disabled = false;
+                }, 2000);
+                
+            } catch (error) {
+                alert("处理过程中发生错误: " + error.message);
+                progressContainer.style.display = 'none';
+                processBtn.disabled = false;
+            }
+        }
+        
+        // 加载学生名单
+        function loadStudentList(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const content = e.target.result;
+                        const lines = content.split('\n');
+                        
+                        students = [];
+                        studentIdMap = {};
+                        
+                        for (const line of lines) {
+                            const trimmedLine = line.trim();
+                            if (trimmedLine) {
+                                const parts = trimmedLine.split(',');
+                                if (parts.length === 2) {
+                                    const studentId = parts[0].trim();
+                                    const studentName = parts[1].trim();
+                                    
+                                    students.push(studentName);
+                                    studentIdMap[studentName] = studentId;
+                                }
+                            }
+                        }
+                        
+                        console.log(`成功加载 ${students.length} 名学生`);
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    reject(new Error("读取学生名单文件失败"));
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+        
+        // 解析考勤文件
+        function parseAttendanceFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const content = e.target.result;
+                        const attendanceData = [];
+                        
+                        // 按日期分割记录
+                        const dateRegex = /(\d{2}月\d{2}日)/g;
+                        const dateBlocks = content.split(dateRegex);
+                        
+                        // 第一个元素是空字符串，从第二个开始处理
+                        for (let i = 1; i < dateBlocks.length; i += 2) {
+                            const date = dateBlocks[i];
+                            const blockContent = i + 1 < dateBlocks.length ? dateBlocks[i + 1] : "";
+                            
+                            // 解析每个日期块中的课程和考勤记录
+                            const lines = blockContent.trim().split('\n');
+                            
+                            let currentTime = null;
+                            let currentSubject = null;
+                            
+                            for (const line of lines) {
+                                const trimmedLine = line.trim();
+                                if (!trimmedLine) continue;
+                                
+                                // 匹配节次和科目：如 "34节 linux" 或 "12节 java 34节 软工" 或 "00节 数据结构"
+                                const courseRegex = /(\d+节)\s+([\u4e00-\u9fa5a-zA-Z]+)/g;
+                                let courseMatch;
+                                
+                                while ((courseMatch = courseRegex.exec(trimmedLine)) !== null) {
+                                    currentTime = courseMatch[1];
+                                    currentSubject = courseMatch[2];
+                                }
+                                
+                                // 匹配考勤记录行：如 "迟到 魏文泽" 或 "请假 周家瑞" 或 "旷课 解东旭（第6节）"
+                                const attendanceRegex = /(请假|迟到|旷课)\s+(.+)/;
+                                const attendanceMatch = trimmedLine.match(attendanceRegex);
+                                
+                                if (attendanceMatch && currentTime && currentSubject) {
+                                    const status = attendanceMatch[1];
+                                    const studentInfo = attendanceMatch[2];
+                                    
+                                    // 处理所有学生名字，根据括号内容确定课时
+                                    const studentEntries = studentInfo.split(/\s+/);
+                                    
+                                    // 检查最后一个学生是否有括号
+                                    const lastStudent = studentEntries[studentEntries.length - 1];
+                                    const bracketMatch = lastStudent.match(/(.+?)（第(\d+)节）$/);
+                                    
+                                    if (bracketMatch) {
+                                        // 有括号的情况，提取括号信息
+                                        const bracketContent = `（第${bracketMatch[2]}节）`;
+                                        const studentNameWithoutBracket = bracketMatch[1];
+                                        
+                                        // 更新最后一个学生的名字
+                                        studentEntries[studentEntries.length - 1] = studentNameWithoutBracket;
+                                        
+                                        // 为所有学生添加括号信息
+                                        for (const studentEntry of studentEntries) {
+                                            if (students.includes(studentEntry)) {
+                                                // 有括号的情况下，只计1课时
+                                                attendanceData.push({
+                                                    date: date,
+                                                    time: currentTime,
+                                                    subject: currentSubject,
+                                                    status: status,
+                                                    student: studentEntry,
+                                                    displayName: studentEntry + bracketContent,
+                                                    periods: 1
+                                                });
+                                            }
+                                        }
+                                    } else {
+                                        // 没有括号的情况
+                                        for (const studentEntry of studentEntries) {
+                                            if (students.includes(studentEntry)) {
+                                                // 根据状态计算课时
+                                                let periods = 2; // 请假和旷课默认计2课时
+                                                if (status === '迟到') {
+                                                    periods = 1; // 迟到每次计1课时
+                                                }
+                                                
+                                                attendanceData.push({
+                                                    date: date,
+                                                    time: currentTime,
+                                                    subject: currentSubject,
+                                                    status: status,
+                                                    student: studentEntry,
+                                                    displayName: studentEntry,
+                                                    periods: periods
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        resolve(attendanceData);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    reject(new Error("读取考勤文件失败"));
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+        
+        // 按拼音排序科目
+        function sortSubjectsByPinyin(subjects) {
+            return subjects.sort((a, b) => {
+                return a.localeCompare(b, 'zh-CN');
+            });
+        }
+        
+        // 创建管理统计表
+        function createManagementTable(attendanceData) {
+            // 收集所有出现的科目
+            const allSubjects = new Set();
+            for (const record of attendanceData) {
+                allSubjects.add(record.subject);
+            }
+            
+            // 按照拼音排序科目
+            const orderedSubjects = sortSubjectsByPinyin(Array.from(allSubjects));
+            
+            // 收集所有有考勤记录的学生
+            const activeStudents = new Set();
+            for (const record of attendanceData) {
+                activeStudents.add(record.student);
+            }
+            
+            // 按照学生名单顺序过滤和排序
+            const finalStudents = students.filter(student => activeStudents.has(student));
+            
+            // 初始化数据结构
+            const managementData = {};
+            
+            for (const subject of orderedSubjects) {
+                managementData[subject] = {
+                    '请假': {},
+                    '迟到': {},
+                    '旷课': {}
+                };
+                
+                for (const student of finalStudents) {
+                    managementData[subject]['请假'][student] = 0;
+                    managementData[subject]['迟到'][student] = 0;
+                    managementData[subject]['旷课'][student] = 0;
+                }
+            }
+            
+            // 统计数据（按课时）
+            for (const record of attendanceData) {
+                const subject = record.subject;
+                const status = record.status;
+                const student = record.student;
+                const periods = record.periods;
+                
+                if (managementData[subject] && managementData[subject][status][student] !== undefined) {
+                    managementData[subject][status][student] += periods;
+                }
+            }
+            
+            // 计算总计
+            const totalData = {
+                '请假': {},
+                '迟到': {},
+                '旷课': {}
+            };
+            
+            for (const student of finalStudents) {
+                totalData['请假'][student] = 0;
+                totalData['迟到'][student] = 0;
+                totalData['旷课'][student] = 0;
+            }
+            
+            for (const subject of orderedSubjects) {
+                for (const status of ['请假', '迟到', '旷课']) {
+                    for (const student of finalStudents) {
+                        totalData[status][student] += managementData[subject][status][student];
+                    }
+                }
+            }
+            
+            // 创建表格数据
+            const rows = [];
+            
+            // 表头
+            const header = ['科目', '类别', ...finalStudents];
+            rows.push(header);
+            
+            // 科目数据
+            for (const subject of orderedSubjects) {
+                for (const status of ['请假', '迟到', '旷课']) {
+                    const row = [subject, status];
+                    
+                    for (const student of finalStudents) {
+                        const value = managementData[subject][status][student];
+                        row.push(value > 0 ? value : '');
+                    }
+                    
+                    rows.push(row);
+                }
+            }
+            
+            // 总计行
+            for (const status of ['请假', '迟到', '旷课']) {
+                const row = ['共计', status];
+                
+                for (const student of finalStudents) {
+                    const value = totalData[status][student];
+                    row.push(value > 0 ? value : '');
+                }
+                
+                rows.push(row);
+            }
+            
+            // 添加学生姓名行
+            const studentNameRow = ['学生姓名', '', ...finalStudents];
+            rows.push(studentNameRow);
+            
+            // 添加最终旷课学时行
+            const finalAbsenceRow = ['最终旷课学时', ''];
+            for (const student of finalStudents) {
+                const absenceHours = totalData['旷课'][student];
+                const lateHours = totalData['迟到'][student];
+                const finalAbsence = absenceHours + (lateHours / 3);
+                finalAbsenceRow.push(finalAbsence > 0 ? finalAbsence.toFixed(2) : '');
+            }
+            rows.push(finalAbsenceRow);
+            
+            return rows;
+        }
+        
+        // 创建教师统计表
+        function createTeacherTable(attendanceData) {
+            const teacherData = {};
+            
+            // 按科目组织数据
+            for (const record of attendanceData) {
+                const subject = record.subject;
+                if (!teacherData[subject]) {
+                    teacherData[subject] = [];
+                }
+                
+                // 查找是否已存在相同日期和节次的记录
+                let found = false;
+                for (const item of teacherData[subject]) {
+                    if (item.date_time === `${record.date} ${record.time}`) {
+                        // 按照学生名单顺序添加学生
+                        if (!item[record.status].includes(record.displayName)) {
+                            item[record.status].push(record.displayName);
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    const newRecord = {
+                        date_time: `${record.date} ${record.time}`,
+                        '请假': [],
+                        '迟到': [],
+                        '旷课': []
+                    };
+                    newRecord[record.status].push(record.displayName);
+                    teacherData[subject].push(newRecord);
+                }
+            }
+            
+            // 对每个科目的学生名单按照学生名单顺序排序
+            for (const subject in teacherData) {
+                for (const record of teacherData[subject]) {
+                    for (const status of ['请假', '迟到', '旷课']) {
+                        // 按照学生名单顺序排序
+                        record[status] = record[status].sort((a, b) => {
+                            // 提取学生姓名（去掉括号内容）
+                            const nameA = a.replace(/（.*?）/, '');
+                            const nameB = b.replace(/（.*?）/, '');
+                            return students.indexOf(nameA) - students.indexOf(nameB);
+                        });
+                    }
+                }
+            }
+            
+            return teacherData;
+        }
+        
+        // 保存Excel文件
+        function saveExcelFiles(managementData, teacherData) {
+            return new Promise((resolve) => {
+                // 创建工作簿
+                const wb = XLSX.utils.book_new();
+                
+                // 创建管理统计表工作表
+                const managementWS = XLSX.utils.aoa_to_sheet(managementData);
+                XLSX.utils.book_append_sheet(wb, managementWS, "管理1表");
+                
+                // 创建教师统计表工作表
+                // 收集所有科目并按拼音排序
+                const allSubjects = Object.keys(teacherData);
+                const orderedSubjects = sortSubjectsByPinyin(allSubjects);
+                
+                // 创建教师表数据
+                const teacherRows = [['科目', '日期', '请假', '迟到', '旷课']];
+                
+                for (const subject of orderedSubjects) {
+                    if (teacherData[subject] && teacherData[subject].length > 0) {
+                        let firstRow = true;
+                        
+                        for (const record of teacherData[subject]) {
+                            const leave = record['请假'].join(' ') || '';
+                            const late = record['迟到'].join(' ') || '';
+                            const absent = record['旷课'].join(' ') || '';
+                            
+                            // 将00节替换为早自习
+                            let displayTime = record.date_time;
+                            displayTime = displayTime.replace('00节', '早自习');
+                            
+                            if (firstRow) {
+                                // 第一行显示科目名称
+                                teacherRows.push([subject, displayTime, leave, late, absent]);
+                                firstRow = false;
+                            } else {
+                                // 后续行不显示科目名称
+                                teacherRows.push(['', displayTime, leave, late, absent]);
+                            }
+                        }
+                        
+                        // 添加空行
+                        teacherRows.push(['', '', '', '', '']);
+                    }
+                }
+                
+                // 创建教师统计表工作表
+                const teacherWS = XLSX.utils.aoa_to_sheet(teacherRows);
+                XLSX.utils.book_append_sheet(wb, teacherWS, "教师2表");
+                
+                // 保存文件
+                XLSX.writeFile(wb, "计科三班考勤情况汇总表.xlsx");
+                
+                resolve();
+            });
+        }
+    </script>
+</body>
+</html>
