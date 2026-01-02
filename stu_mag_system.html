@@ -1,0 +1,3545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 所有CSS样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3a1;
+            --accent-dark: #3da68a;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --success-color: #27ae60;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark-color);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* 登录页面样式 */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .auth-box {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #219653;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-dark);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        /* 主页面样式 */
+        .main-container {
+            display: none;
+        }
+
+        .header {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info span {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .controls {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        /* 表格样式 - 列宽自适应 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+            /* 自动布局，列宽根据内容调整 */
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            vertical-align: middle;
+            white-space: normal;
+            word-break: break-word;
+            min-width: 100px;
+            /* 设置最小宽度保证可读性 */
+        }
+
+        /* 固定列样式 - 左侧列和操作列 */
+        .fixed-left,
+        .fixed-right {
+            position: sticky;
+            background-color: white;
+            z-index: 10;
+        }
+
+        .fixed-left {
+            left: 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .fixed-right {
+            right: 0;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 表头固定列样式 */
+        th.fixed-left,
+        th.fixed-right {
+            background-color: #f8f9fa;
+            z-index: 20;
+            /* 表头固定列层级更高 */
+        }
+
+        /* 选中行和悬停行的固定列样式 */
+        tr:hover .fixed-left,
+        tr:hover .fixed-right,
+        tr.selected .fixed-left,
+        tr.selected .fixed-right {
+            background-color: #f8f9fa;
+        }
+
+        tr.selected .fixed-left,
+        tr.selected .fixed-right {
+            background-color: #e3f2fd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark-color);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background-color: #e9ecef;
+        }
+
+        th.sorted {
+            color: var(--primary-color);
+        }
+
+        th.sorted.desc::after {
+            content: " ▽";
+            font-size: 12px;
+        }
+
+        th.sorted.asc::after {
+            content: " △";
+            font-size: 12px;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr.selected {
+            background-color: #e3f2fd;
+        }
+
+        .action-cell {
+            white-space: nowrap;
+            min-width: 200px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            margin: 0 3px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .detail-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-card {
+            background-color: #f8f9fa;
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .detail-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            display: inline-block;
+            width: 140px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .detail-value {
+            color: #555;
+            flex-grow: 1;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        .import-export-box {
+            background-color: #f8f9fa;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .file-input {
+            margin: 15px 0;
+        }
+
+        .file-label {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .file-name {
+            font-style: italic;
+            color: #666;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .table-header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: var(--radius);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-editor-modal {
+            max-width: 600px;
+        }
+
+        .header-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 10px;
+        }
+
+        .header-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-item:last-child {
+            border-bottom: none;
+        }
+
+        .header-item label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-all-row {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .batch-delete-btn {
+            margin-left: auto;
+        }
+
+        /* 导入类型切换 */
+        .import-type-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .import-type-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .import-type-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .import-type-content {
+            display: none;
+        }
+
+        .import-type-content.active {
+            display: block;
+        }
+
+        /* 状态指示器 */
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-success {
+            background-color: var(--success-color);
+        }
+
+        .status-warning {
+            background-color: var(--warning-color);
+        }
+
+        .status-error {
+            background-color: var(--danger-color);
+        }
+
+        @media (max-width: 1200px) {
+            .controls-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .auth-box {
+                padding: 25px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header-controls {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
+            .action-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<!-- 
+1. 加密解密系数为 5 3（已改为1 1，减少乱码）
+2. 5 3 大量数据处理有问题
+ -->
+
+<body>
+    <div class="container">
+        <!-- 登录页面 -->
+        <div class="auth-container" id="authContainer">
+            <div class="auth-box">
+                <h2><i class="fas fa-user-graduate"></i> 学生信息管理系统</h2>
+
+                <div class="message" id="authMessage"></div>
+
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginUsername">管理员用户名</label>
+                        <input type="text" id="loginUsername" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">密码</label>
+                        <input type="password" id="loginPassword" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> 管理员登录
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 主页面 -->
+        <div class="main-container" id="mainContainer">
+            <!-- 顶部栏 -->
+            <div class="header">
+                <h1><i class="fas fa-user-graduate"></i> 学生信息管理系统</h1>
+                <div class="user-info">
+                    <span id="currentUser">管理员</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                    </button>
+                </div>
+            </div>
+
+            <!-- 统计信息 -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">学生总数</div>
+                    <div class="stat-value" id="totalStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">男生人数</div>
+                    <div class="stat-value" id="maleStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">女生人数</div>
+                    <div class="stat-value" id="femaleStudents">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">部门数量</div>
+                    <div class="stat-value" id="totalDepartments">0</div>
+                </div>
+            </div>
+
+            <!-- 控制区 -->
+            <div class="controls">
+                <div class="controls-grid">
+                    <div class="form-group">
+                        <label for="searchInput">搜索（学号/姓名/部门）</label>
+                        <input type="text" id="searchInput" class="form-control" placeholder="输入关键词进行搜索">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sortSelect">排序方式</label>
+                        <select id="sortSelect" class="form-control">
+                            <option value="studentId">按学号排序</option>
+                            <option value="name">按姓名排序</option>
+                            <option value="grade">按年级排序</option>
+                            <option value="department">按部门排序</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departmentFilter">部门筛选</label>
+                        <select id="departmentFilter" class="form-control">
+                            <option value="">所有部门</option>
+                            <!-- 部门选项将通过JS动态添加 -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="addStudentBtn">
+                        <i class="fas fa-plus"></i> 新增学生
+                    </button>
+                    <button class="btn btn-success" id="batchImportBtn">
+                        <i class="fas fa-file-import"></i> 批量导入
+                    </button>
+                    <button class="btn btn-warning" id="exportDataBtn">
+                        <i class="fas fa-file-export"></i> 导出数据
+                    </button>
+                    <button class="btn btn-accent" id="saveEncryptedBtn">
+                        <i class="fas fa-lock"></i> 加密保存到本地
+                    </button>
+                    <button class="btn btn-accent" id="loadEncryptedBtn">
+                        <i class="fas fa-unlock"></i> 导入加密文件
+                    </button>
+                    <button class="btn btn-primary" id="manageHeadersBtn">
+                        <i class="fas fa-columns"></i> 管理表头
+                    </button>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="table-container">
+                <div class="table-header-controls">
+                    <div class="select-all-row">
+                        <input type="checkbox" id="selectAllCheckbox">
+                        <label for="selectAllCheckbox">全选当前页</label>
+                        <button class="btn btn-danger batch-delete-btn" id="batchDeleteBtn" style="display: none;">
+                            <i class="fas fa-trash"></i> 批量删除
+                        </button>
+                    </div>
+                </div>
+
+                <table id="studentTable">
+                    <thead id="studentTableHead">
+                        <tr>
+                            <!-- 表头将通过JS动态生成 -->
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <!-- 学生数据将通过JS动态添加 -->
+                    </tbody>
+                </table>
+
+                <div class="pagination" id="pagination">
+                    <!-- 分页按钮将通过JS动态添加 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学生详情模态框 -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">学生详细信息</h2>
+                <button class="close-btn" id="closeDetailModal">&times;</button>
+            </div>
+            <div id="detailContent">
+                <!-- 详情内容将通过JS动态添加 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增/编辑学生模态框 -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="editModalTitle">新增学生信息</h2>
+                <button class="close-btn" id="closeEditModal">&times;</button>
+            </div>
+            <form id="studentForm">
+                <input type="hidden" id="editStudentId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentId">学号 *</label>
+                        <input type="text" id="studentId" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerId">注册号</label>
+                        <input type="text" id="registerId" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">姓名 *</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">性别</label>
+                        <select id="gender" class="form-control">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="college">学院</label>
+                        <input type="text" id="college" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grade">年级</label>
+                        <input type="text" id="grade" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="majorCategory">专业分类</label>
+                        <input type="text" id="majorCategory" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="major">专业</label>
+                        <input type="text" id="major" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="class">班级</label>
+                        <input type="text" id="class" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birthDate">出生年月</label>
+                        <input type="date" id="birthDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idCard">身份证号</label>
+                        <input type="text" id="idCard" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="graduationSchool">高职毕业院校</label>
+                        <input type="text" id="graduationSchool" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ethnicity">民族</label>
+                        <input type="text" id="ethnicity" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="politicalStatus">政治面貌</label>
+                        <input type="text" id="politicalStatus" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sourceProvince">生源省份</label>
+                        <input type="text" id="sourceProvince" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="homeAddress">家庭地址</label>
+                        <input type="text" id="homeAddress" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">学生联系方式</label>
+                        <input type="text" id="phone" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherName">父亲姓名</label>
+                        <input type="text" id="fatherName" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherPhone">父亲联系方式</label>
+                        <input type="text" id="fatherPhone" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherIdCard">父亲身份证件号</label>
+                        <input type="text" id="fatherIdCard" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="motherName">母亲姓名</label>
+                        <input type="text" id="motherName" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motherPhone">母亲联系方式</label>
+                        <input type="text" id="motherPhone" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motherIdCard">母亲身份证件号</label>
+                        <input type="text" id="motherIdCard" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dormitory">宿舍号</label>
+                        <input type="text" id="dormitory" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="qq">本人QQ号</label>
+                        <input type="text" id="qq" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height">身高(cm)</label>
+                        <input type="number" id="height" class="form-control" min="100" max="250">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight">体重(kg)</label>
+                        <input type="number" id="weight" class="form-control" min="30" max="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admissionScore">升学成绩</label>
+                        <input type="number" id="admissionScore" class="form-control" step="0.1" min="0" max="750">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hometown">籍贯</label>
+                        <input type="text" id="hometown" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">部门 *</label>
+                        <input type="text" id="department" class="form-control" required list="departmentList">
+                        <datalist id="departmentList">
+                            <!-- 部门选项将通过JS动态添加 -->
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 批量导入模态框 -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">批量导入学生数据</h2>
+                <button class="close-btn" id="closeImportModal">&times;</button>
+            </div>
+            <div class="import-export-box">
+                <div class="import-type-tabs">
+                    <div class="import-type-tab active" data-type="plain">普通文本导入</div>
+                    <div class="import-type-tab" data-type="encrypted">加密文件导入</div>
+                </div>
+
+                <div id="plainImport" class="import-type-content active">
+                    <p>请选择符合格式的txt文件进行批量导入：</p>
+                    <p><small>格式要求：每行存储一个学生的一条信息，每个人之间以---分隔<br>
+                            示例：<br>
+                            学号：20230001<br>
+                            姓名：张三<br>
+                            性别：男<br>
+                            ...<br>
+                            ---<br>
+                            学号：20230002<br>
+                            ...</small></p>
+
+                    <div class="file-input">
+                        <label class="file-label">
+                            <i class="fas fa-file-upload"></i> 选择批量导入文件
+                            <input type="file" id="importBatchFile" accept=".txt" style="display: none;">
+                        </label>
+                        <span class="file-name" id="batchFileName">未选择文件</span>
+                    </div>
+                </div>
+
+                <div id="encryptedImport" class="import-type-content">
+                    <p>请选择加密的学生数据文件进行导入：</p>
+                    <p><small>加密文件格式：由本系统导出的加密文件<br>
+                            注意：导入将覆盖现有数据，请谨慎操作！</small></p>
+
+                    <div class="file-input">
+                        <label class="file-label">
+                            <i class="fas fa-file-upload"></i> 选择加密文件
+                            <input type="file" id="importEncryptedFile" accept=".dat" style="display: none;">
+                        </label>
+                        <span class="file-name" id="encryptedFileName">未选择文件</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelImportBtn">取消</button>
+                    <button class="btn btn-success" id="processImportBtn">
+                        <i class="fas fa-upload"></i> 处理并导入数据
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导出数据模态框 -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">导出学生数据</h2>
+                <button class="close-btn" id="closeExportModal">&times;</button>
+            </div>
+            <div class="import-export-box">
+                <div class="form-group">
+                    <label for="exportFormat">导出格式</label>
+                    <select id="exportFormat" class="form-control">
+                        <option value="byDepartment">按部门分组</option>
+                        <option value="fullData">完整数据</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exportColumns">选择导出列（多选）</label>
+                    <select id="exportColumns" class="form-control" multiple style="height: 150px;">
+                        <!-- 导出列选项将通过JS动态添加 -->
+                    </select>
+                    <small>按住Ctrl键可多选</small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelExportBtn">取消</button>
+                    <button class="btn btn-warning" id="processExportBtn">
+                        <i class="fas fa-download"></i> 导出数据
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表头管理模态框 -->
+    <div class="modal" id="headerModal">
+        <div class="modal-content header-editor-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">管理表头</h2>
+                <button class="close-btn" id="closeHeaderModal">&times;</button>
+            </div>
+            <div class="import-export-box">
+                <div class="form-group">
+                    <label for="newHeaderName">新增表头名称</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="newHeaderName" class="form-control" placeholder="输入新表头名称">
+                        <button class="btn btn-primary" id="addHeaderBtn">
+                            <i class="fas fa-plus"></i> 添加
+                        </button>
+                    </div>
+                </div>
+
+                <div class="header-list" id="headerList">
+                    <!-- 表头列表将通过JS动态添加 -->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelHeaderBtn">取消</button>
+                    <button class="btn btn-success" id="saveHeadersBtn">
+                        <i class="fas fa-save"></i> 保存表头设置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 使用数据验证工具的加密解密函数 ====================
+        // 基于凯撒密码但带有位置依赖的偏移（与数据验证工具完全一致）
+        function dataEncrypt(str) {
+            if (!str) return '';
+
+            try {
+                let result = '';
+                const baseShift = 1; // 基础偏移量
+                const positionFactor = 1; // 位置因子
+
+                for (let i = 0; i < str.length; i++) {
+                    const char = str[i];
+                    const charCode = char.charCodeAt(0);
+
+                    // 偏移量 = 基础偏移量 + 位置因子 * 位置
+                    const shift = baseShift + (positionFactor * i);
+                    const encryptedCharCode = (charCode + shift) % 65536;
+
+                    result += String.fromCharCode(encryptedCharCode);
+                }
+
+                return result;
+            } catch (e) {
+                console.error('加密失败:', e);
+                return '';
+            }
+        }
+
+        function dataDecrypt(str) {
+            if (!str) return '';
+
+            try {
+                let result = '';
+                const baseShift = 1;
+                const positionFactor = 1;
+
+                for (let i = 0; i < str.length; i++) {
+                    const char = str[i];
+                    const charCode = char.charCodeAt(0);
+
+                    const shift = baseShift + (positionFactor * i);
+                    // 注意：需要确保结果为正数
+                    const decryptedCharCode = (charCode - shift + 65536) % 65536;
+
+                    result += String.fromCharCode(decryptedCharCode);
+                }
+
+                return result;
+            } catch (e) {
+                console.error('解密失败:', e);
+                return null;
+            }
+        }
+
+        // 验证是否为有效的加密数据
+        function isValidEncryptedData(text) {
+            if (!text || typeof text !== 'string') return false;
+
+            try {
+                // 尝试解密
+                const decrypted = dataDecrypt(text);
+                if (!decrypted) return false;
+
+                // 尝试解析为JSON
+                const parsed = JSON.parse(decrypted);
+                return parsed && typeof parsed === 'object';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // ==================== 系统状态和变量 ====================
+        let currentUser = null;
+        let students = [];
+        let filteredStudents = [];
+        let currentPage = 1;
+        const pageSize = 10;
+        let sortColumn = 'studentId';
+        let sortDirection = 'asc';
+        let selectedStudents = new Set(); // 用于批量选择的集合
+
+        // 表头字段映射（中文显示名）
+        const headerFieldMapping = {
+            'studentId': '学号',
+            'registerId': '注册号',
+            'name': '姓名',
+            'gender': '性别',
+            'college': '学院',
+            'grade': '年级',
+            'majorCategory': '专业分类',
+            'major': '专业',
+            'class': '班级',
+            'birthDate': '出生年月',
+            'idCard': '身份证号',
+            'graduationSchool': '高职毕业院校',
+            'ethnicity': '民族',
+            'politicalStatus': '政治面貌',
+            'sourceProvince': '生源省份',
+            'homeAddress': '家庭地址',
+            'phone': '联系方式',
+            'fatherName': '父亲姓名',
+            'fatherPhone': '父亲电话',
+            'fatherIdCard': '父亲身份证',
+            'motherName': '母亲姓名',
+            'motherPhone': '母亲电话',
+            'motherIdCard': '母亲身份证',
+            'dormitory': '宿舍号',
+            'qq': 'QQ号',
+            'height': '身高(cm)',
+            'weight': '体重(kg)',
+            'admissionScore': '升学成绩',
+            'hometown': '籍贯',
+            'department': '部门'
+        };
+
+        // 基本表头字段（固定显示）
+        const basicHeaders = [
+            { key: 'select', name: '选择', visible: true, fixed: true },
+            { key: 'studentId', name: '学号', visible: true, fixed: true },
+            { key: 'name', name: '姓名', visible: true, fixed: true },
+            { key: 'gender', name: '性别', visible: true, fixed: false },
+            { key: 'department', name: '部门', visible: true, fixed: false }
+        ];
+
+        // 动态表头（从数据中提取）
+        let dynamicHeaders = [];
+
+        // 加密的管理员凭据 - 使用新的加密方法
+        const encryptedAdmin = {
+            username: dataEncrypt('wyx'), // 加密用户名
+            password: dataEncrypt('wyxwyx') // 加密密码
+        };
+
+        // DOM元素
+        const authContainer = document.getElementById('authContainer');
+        const mainContainer = document.getElementById('mainContainer');
+        const loginForm = document.getElementById('loginForm');
+        const authMessage = document.getElementById('authMessage');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentUserSpan = document.getElementById('currentUser');
+        const studentTableHead = document.getElementById('studentTableHead');
+        const studentTableBody = document.getElementById('studentTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const departmentFilter = document.getElementById('departmentFilter');
+        const addStudentBtn = document.getElementById('addStudentBtn');
+        const batchImportBtn = document.getElementById('batchImportBtn');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const saveEncryptedBtn = document.getElementById('saveEncryptedBtn');
+        const loadEncryptedBtn = document.getElementById('loadEncryptedBtn');
+        const manageHeadersBtn = document.getElementById('manageHeadersBtn');
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const batchDeleteBtn = document.getElementById('batchDeleteBtn');
+
+        // 模态框相关
+        const detailModal = document.getElementById('detailModal');
+        const editModal = document.getElementById('editModal');
+        const importModal = document.getElementById('importModal');
+        const exportModal = document.getElementById('exportModal');
+        const headerModal = document.getElementById('headerModal');
+        const closeDetailModal = document.getElementById('closeDetailModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const closeImportModal = document.getElementById('closeImportModal');
+        const closeExportModal = document.getElementById('closeExportModal');
+        const closeHeaderModal = document.getElementById('closeHeaderModal');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const cancelImportBtn = document.getElementById('cancelImportBtn');
+        const cancelExportBtn = document.getElementById('cancelExportBtn');
+        const cancelHeaderBtn = document.getElementById('cancelHeaderBtn');
+        const studentForm = document.getElementById('studentForm');
+        const importBatchFile = document.getElementById('importBatchFile');
+        const batchFileName = document.getElementById('batchFileName');
+        const processImportBtn = document.getElementById('processImportBtn');
+        const processExportBtn = document.getElementById('processExportBtn');
+        const addHeaderBtn = document.getElementById('addHeaderBtn');
+        const saveHeadersBtn = document.getElementById('saveHeadersBtn');
+        const newHeaderName = document.getElementById('newHeaderName');
+        const headerList = document.getElementById('headerList');
+        const exportColumns = document.getElementById('exportColumns');
+        const importEncryptedFile = document.getElementById('importEncryptedFile');
+        const encryptedFileName = document.getElementById('encryptedFileName');
+
+        // 统计元素
+        const totalStudentsEl = document.getElementById('totalStudents');
+        const maleStudentsEl = document.getElementById('maleStudents');
+        const femaleStudentsEl = document.getElementById('femaleStudents');
+        const totalDepartmentsEl = document.getElementById('totalDepartments');
+
+        // 工具函数：显示消息
+        function showMessage(text, type, duration = 3000) {
+            authMessage.textContent = text;
+            authMessage.className = `message ${type}`;
+
+            if (duration > 0) {
+                setTimeout(() => {
+                    authMessage.style.display = 'none';
+                }, duration);
+            }
+        }
+
+        // 工具函数：获取字段的中文名称
+        function getFieldChineseName(key) {
+            return headerFieldMapping[key] || key;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            // 检查是否有已登录用户
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    showMainPage();
+                } catch (e) {
+                    localStorage.removeItem('currentUser');
+                    console.error('解析用户数据失败:', e);
+                }
+            }
+
+            // 加载表头设置
+            loadHeaderSettings();
+
+            // 加载学生数据
+            loadStudents();
+
+            // 设置事件监听器
+            setupEventListeners();
+        });
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 登录表单提交
+            loginForm.addEventListener('submit', handleLogin);
+
+            // 退出登录
+            logoutBtn.addEventListener('click', handleLogout);
+
+            // 搜索
+            searchInput.addEventListener('input', debounce(filterStudents, 300));
+
+            // 排序
+            sortSelect.addEventListener('change', () => {
+                sortColumn = sortSelect.value;
+                sortStudents();
+                renderTable();
+            });
+
+            // 部门筛选
+            departmentFilter.addEventListener('change', filterStudents);
+
+            // 按钮点击事件
+            addStudentBtn.addEventListener('click', () => openEditModal());
+            batchImportBtn.addEventListener('click', showImportModal);
+            exportDataBtn.addEventListener('click', showExportModal);
+            saveEncryptedBtn.addEventListener('click', saveEncryptedData);
+            loadEncryptedBtn.addEventListener('click', showImportModal);
+            manageHeadersBtn.addEventListener('click', showHeaderModal);
+
+            // 全选复选框
+            selectAllCheckbox.addEventListener('change', handleSelectAll);
+
+            // 批量删除按钮
+            batchDeleteBtn.addEventListener('click', handleBatchDelete);
+
+            // 关闭模态框
+            closeDetailModal.addEventListener('click', () => detailModal.style.display = 'none');
+            closeEditModal.addEventListener('click', () => editModal.style.display = 'none');
+            closeImportModal.addEventListener('click', () => importModal.style.display = 'none');
+            closeExportModal.addEventListener('click', () => exportModal.style.display = 'none');
+            closeHeaderModal.addEventListener('click', () => headerModal.style.display = 'none');
+
+            // 取消按钮
+            cancelEditBtn.addEventListener('click', () => editModal.style.display = 'none');
+            cancelImportBtn.addEventListener('click', () => importModal.style.display = 'none');
+            cancelExportBtn.addEventListener('click', () => exportModal.style.display = 'none');
+            cancelHeaderBtn.addEventListener('click', () => headerModal.style.display = 'none');
+
+            // 学生表单提交
+            studentForm.addEventListener('submit', handleSaveStudent);
+
+            // 批量导入文件选择
+            importBatchFile.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    batchFileName.textContent = this.files[0].name;
+                } else {
+                    batchFileName.textContent = '未选择文件';
+                }
+            });
+
+            // 加密文件选择
+            importEncryptedFile.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    encryptedFileName.textContent = this.files[0].name;
+                } else {
+                    encryptedFileName.textContent = '未选择文件';
+                }
+            });
+
+            // 处理批量导入
+            processImportBtn.addEventListener('click', handleImport);
+
+            // 处理导出
+            processExportBtn.addEventListener('click', handleExport);
+
+            // 添加表头按钮
+            addHeaderBtn.addEventListener('click', addNewHeader);
+
+            // 保存表头设置按钮
+            saveHeadersBtn.addEventListener('click', saveHeaderSettings);
+
+            // 导入类型切换
+            document.querySelectorAll('.import-type-tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const type = this.getAttribute('data-type');
+                    switchImportType(type);
+                });
+            });
+
+            // 点击模态框外部关闭
+            window.addEventListener('click', function (event) {
+                if (event.target === detailModal) detailModal.style.display = 'none';
+                if (event.target === editModal) editModal.style.display = 'none';
+                if (event.target === importModal) importModal.style.display = 'none';
+                if (event.target === exportModal) exportModal.style.display = 'none';
+                if (event.target === headerModal) headerModal.style.display = 'none';
+            });
+
+            // 防止表单默认提交
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', e => e.preventDefault());
+            });
+        }
+
+        // 防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // 显示导入模态框
+        function showImportModal() {
+            importModal.style.display = 'flex';
+            switchImportType('plain');
+        }
+
+        // 显示导出模态框
+        function showExportModal() {
+            updateExportColumns();
+            exportModal.style.display = 'flex';
+        }
+
+        // 显示表头管理模态框
+        function showHeaderModal() {
+            renderHeaderList();
+            headerModal.style.display = 'flex';
+        }
+
+        // 切换导入类型
+        function switchImportType(type) {
+            // 更新标签
+            document.querySelectorAll('.import-type-tab').forEach(tab => {
+                if (tab.getAttribute('data-type') === type) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            // 更新内容
+            document.querySelectorAll('.import-type-content').forEach(content => {
+                if (content.id === `${type}Import`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // 处理登录
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            // 解密管理员凭据进行比较
+            const decryptedUsername = dataDecrypt(encryptedAdmin.username);
+            const decryptedPassword = dataDecrypt(encryptedAdmin.password);
+
+            if (username === decryptedUsername && password === decryptedPassword) {
+                currentUser = {
+                    username: username,
+                    isAdmin: true
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showMainPage();
+                showMessage('管理员登录成功！', 'success');
+            } else {
+                showMessage('用户名或密码错误！', 'error');
+            }
+        }
+
+        // 处理退出登录
+        function handleLogout() {
+            if (confirm('确定要退出登录吗？')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                authContainer.style.display = 'flex';
+                mainContainer.style.display = 'none';
+
+                // 清空登录表单
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+
+                showMessage('已成功退出登录', 'success');
+            }
+        }
+
+        // 显示主页面
+        function showMainPage() {
+            authContainer.style.display = 'none';
+            mainContainer.style.display = 'block';
+            currentUserSpan.textContent = currentUser.username;
+
+            // 加载学生数据
+            loadStudents();
+
+            // 更新统计
+            updateStats();
+        }
+
+        // 加载学生数据
+        function loadStudents() {
+            // 从localStorage加载加密的学生数据
+            const encryptedStudents = localStorage.getItem('encryptedStudents');
+            if (encryptedStudents) {
+                try {
+                    // 解密数据
+                    const decryptedJson = dataDecrypt(encryptedStudents);
+                    if (decryptedJson) {
+                        students = JSON.parse(decryptedJson);
+                    } else {
+                        console.error('解密失败，加载示例数据');
+                        loadSampleData();
+                    }
+                } catch (e) {
+                    console.error('解析学生数据失败:', e);
+
+                    // 尝试旧格式兼容
+                    try {
+                        const savedStudents = localStorage.getItem('students');
+                        if (savedStudents) {
+                            students = JSON.parse(savedStudents);
+                            // 重新加密保存
+                            saveStudentsToLocalStorage();
+                            // 删除旧格式数据
+                            localStorage.removeItem('students');
+                        } else {
+                            loadSampleData();
+                        }
+                    } catch (e2) {
+                        console.error('旧格式解析也失败，加载示例数据:', e2);
+                        loadSampleData();
+                    }
+                }
+            } else {
+                // 如果没有数据，尝试加载旧格式数据
+                const savedStudents = localStorage.getItem('students');
+                if (savedStudents) {
+                    try {
+                        students = JSON.parse(savedStudents);
+                        // 重新加密保存
+                        saveStudentsToLocalStorage();
+                        // 删除旧格式数据
+                        localStorage.removeItem('students');
+                    } catch (e) {
+                        console.error('旧格式解析失败，加载示例数据:', e);
+                        loadSampleData();
+                    }
+                } else {
+                    // 加载示例数据
+                    loadSampleData();
+                }
+            }
+
+            // 初始化过滤和排序
+            filteredStudents = [...students];
+            sortStudents();
+
+            // 渲染表格
+            renderTable();
+
+            // 更新部门筛选选项
+            updateDepartmentFilter();
+
+            // 提取动态表头
+            extractDynamicHeaders();
+        }
+
+        // 保存学生数据到localStorage（加密）
+        function saveStudentsToLocalStorage() {
+            try {
+                const jsonData = JSON.stringify(students);
+                const encryptedData = dataEncrypt(jsonData);
+                localStorage.setItem('encryptedStudents', encryptedData);
+            } catch (error) {
+                console.error('加密保存失败:', error);
+                alert('数据保存失败，请重试！');
+            }
+        }
+
+        // 加载示例数据
+        function loadSampleData() {
+            students = [
+                {
+                    studentId: '20230001',
+                    name: '张三',
+                    gender: '男',
+                    college: '计算机科学与技术学院',
+                    grade: '2023',
+                    major: '计算机科学与技术',
+                    department: '技术部',
+                    class: '23计科1班',
+                    phone: '13800138000',
+                    birthDate: '2005-06-15',
+                    idCard: '440102200506153215',
+                    homeAddress: '广东省广州市天河区',
+                    qq: '123456789',
+                    height: 175,
+                    weight: 65
+                },
+                {
+                    studentId: '20230002',
+                    name: '李四',
+                    gender: '女',
+                    college: '文学院',
+                    grade: '2023',
+                    major: '汉语言文学',
+                    department: '宣传部',
+                    class: '23中文1班',
+                    phone: '13800138001',
+                    birthDate: '2005-08-20',
+                    idCard: '440103200508203216',
+                    homeAddress: '广东省深圳市南山区',
+                    qq: '987654321',
+                    height: 162,
+                    weight: 50
+                },
+                {
+                    studentId: '20230003',
+                    name: '王五',
+                    gender: '男',
+                    college: '经济管理学院',
+                    grade: '2023',
+                    major: '金融学',
+                    department: '外联部',
+                    class: '23金融1班',
+                    phone: '13800138002',
+                    birthDate: '2005-03-10',
+                    idCard: '440104200503103217',
+                    homeAddress: '广东省珠海市香洲区',
+                    qq: '456789123',
+                    height: 180,
+                    weight: 70
+                }
+            ];
+
+            // 加密保存到localStorage
+            saveStudentsToLocalStorage();
+        }
+
+        // 排序学生数据
+        function sortStudents() {
+            filteredStudents.sort((a, b) => {
+                let valA = a[sortColumn];
+                let valB = b[sortColumn];
+
+                // 处理可能为空的字段
+                if (valA === undefined || valA === null) valA = '';
+                if (valB === undefined || valB === null) valB = '';
+
+                // 处理数字比较
+                if (!isNaN(valA) && !isNaN(valB)) {
+                    valA = parseFloat(valA);
+                    valB = parseFloat(valB);
+                    return sortDirection === 'asc' ? valA - valB : valB - valA;
+                }
+
+                // 处理日期比较
+                if (sortColumn === 'birthDate') {
+                    valA = new Date(valA);
+                    valB = new Date(valB);
+                    return sortDirection === 'asc' ? valA - valB : valB - valA;
+                }
+
+                // 字符串比较
+                if (sortDirection === 'asc') {
+                    return valA.toString().localeCompare(valB.toString());
+                } else {
+                    return valB.toString().localeCompare(valA.toString());
+                }
+            });
+        }
+
+        // 过滤学生数据
+        function filterStudents() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedDepartment = departmentFilter.value;
+
+            filteredStudents = students.filter(student => {
+                // 搜索过滤
+                const matchesSearch = !searchTerm ||
+                    (student.studentId && student.studentId.toLowerCase().includes(searchTerm)) ||
+                    (student.name && student.name.toLowerCase().includes(searchTerm)) ||
+                    (student.department && student.department.toLowerCase().includes(searchTerm)) ||
+                    (student.college && student.college.toLowerCase().includes(searchTerm)) ||
+                    (student.major && student.major.toLowerCase().includes(searchTerm)) ||
+                    (student.class && student.class.toLowerCase().includes(searchTerm));
+
+                // 部门过滤
+                const matchesDepartment = !selectedDepartment ||
+                    student.department === selectedDepartment;
+
+                return matchesSearch && matchesDepartment;
+            });
+
+            // 重新排序
+            sortStudents();
+
+            // 重置到第一页
+            currentPage = 1;
+
+            // 清空选择
+            selectedStudents.clear();
+            selectAllCheckbox.checked = false;
+            batchDeleteBtn.style.display = 'none';
+
+            // 重新渲染表格
+            renderTable();
+
+            // 更新统计
+            updateStats();
+        }
+
+        // 渲染表格
+        function renderTable() {
+            // 渲染表头
+            renderTableHeaders();
+
+            // 渲染表格内容
+            studentTableBody.innerHTML = '';
+
+            // 计算分页
+            const totalPages = Math.ceil(filteredStudents.length / pageSize);
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, filteredStudents.length);
+            const pageStudents = filteredStudents.slice(startIndex, endIndex);
+
+            // 渲染学生行
+            pageStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+                const isSelected = selectedStudents.has(student.studentId);
+                if (isSelected) {
+                    row.classList.add('selected');
+                }
+
+                // 构建行内容
+                let rowHTML = '';
+
+                // 获取所有可见表头
+                const visibleHeaders = getAllVisibleHeaders();
+
+                visibleHeaders.forEach((header, colIndex) => {
+                    if (header.key === 'select') {
+                        // 选择列
+                        const isChecked = selectedStudents.has(student.studentId);
+                        rowHTML += `<td class="fixed-left" style="text-align: center;">
+                            <input type="checkbox" class="student-checkbox" data-id="${student.studentId}" ${isChecked ? 'checked' : ''}>
+                        </td>`;
+                    } else {
+                        // 数据列
+                        let value = student[header.key] || '';
+                        if (value && typeof value === 'object') {
+                            value = JSON.stringify(value);
+                        }
+
+                        // 为学号、姓名列添加固定左侧类
+                        let cellClass = '';
+                        if (header.key === 'studentId' || header.key === 'name') {
+                            cellClass = 'fixed-left';
+                        }
+
+                        rowHTML += `<td class="${cellClass}" style="text-align: center;">${value}</td>`;
+                    }
+                });
+
+                // 操作列
+                rowHTML += `
+                    <td class="action-cell fixed-right" style="text-align: center;">
+                        <button class="action-btn btn-primary view-btn" data-id="${student.studentId}" title="查看详情">
+                            <i class="fas fa-eye"></i> 查看
+                        </button>
+                        <button class="action-btn btn-warning edit-btn" data-id="${student.studentId}" title="编辑信息">
+                            <i class="fas fa-edit"></i> 编辑
+                        </button>
+                        <button class="action-btn btn-danger delete-btn" data-id="${student.studentId}" title="删除学生">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    </td>
+                `;
+
+                row.innerHTML = rowHTML;
+                studentTableBody.appendChild(row);
+            });
+
+            // 如果没有数据，显示提示
+            if (filteredStudents.length === 0) {
+                const row = document.createElement('tr');
+                const colCount = getAllVisibleHeaders().length + 1; // +1 为操作列
+                row.innerHTML = `<td colspan="${colCount}" style="text-align: center; padding: 40px; color: #666;">
+                    <i class="fas fa-search" style="font-size: 48px; margin-bottom: 10px;"></i>
+                    <div>没有找到符合条件的学生数据</div>
+                </td>`;
+                studentTableBody.appendChild(row);
+            }
+
+            // 渲染分页
+            renderPagination(totalPages);
+
+            // 添加按钮事件监听器
+            addTableButtonListeners();
+
+            // 更新批量删除按钮显示状态
+            updateBatchDeleteButton();
+        }
+
+        // 渲染表头
+        function renderTableHeaders() {
+            studentTableHead.innerHTML = '';
+            const headerRow = document.createElement('tr');
+
+            // 获取所有可见表头
+            const visibleHeaders = getAllVisibleHeaders();
+
+            visibleHeaders.forEach((header, index) => {
+                const th = document.createElement('th');
+                th.textContent = header.name;
+                th.setAttribute('data-sort', header.key);
+                th.setAttribute('title', header.key);
+                th.style.textAlign = 'center';
+
+                // 为选择列、学号、姓名列添加固定左侧类
+                if (header.key === 'select' || header.key === 'studentId' || header.key === 'name') {
+                    th.classList.add('fixed-left');
+                }
+
+                // 添加排序功能（排除选择列）
+                if (header.key !== 'select') {
+                    th.style.cursor = 'pointer';
+                    th.addEventListener('click', () => {
+                        if (sortColumn === header.key) {
+                            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            sortColumn = header.key;
+                            sortDirection = 'asc';
+                        }
+                        sortStudents();
+                        renderTable();
+                    });
+
+                    // 标记当前排序列
+                    if (sortColumn === header.key) {
+                        th.classList.add('sorted', sortDirection);
+                    }
+                }
+
+                headerRow.appendChild(th);
+            });
+
+            // 操作列
+            const actionTh = document.createElement('th');
+            actionTh.textContent = '操作';
+            actionTh.classList.add('fixed-right'); // 添加固定右侧类
+            actionTh.style.minWidth = '200px';
+            actionTh.style.textAlign = 'center';
+            headerRow.appendChild(actionTh);
+
+            studentTableHead.appendChild(headerRow);
+        }
+
+        // 获取所有可见表头
+        function getAllVisibleHeaders() {
+            // 合并基本表头和动态表头
+            const allHeaders = [...basicHeaders, ...dynamicHeaders];
+
+            // 过滤出可见的表头
+            const visibleHeaders = allHeaders.filter(header => header.visible);
+
+            // 确保选择列在最前面
+            const selectHeader = visibleHeaders.find(h => h.key === 'select');
+            const otherHeaders = visibleHeaders.filter(h => h.key !== 'select');
+
+            return selectHeader ? [selectHeader, ...otherHeaders] : otherHeaders;
+        }
+
+        // 渲染分页
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // 上一页按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.title = '上一页';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
+            });
+            pagination.appendChild(prevBtn);
+
+            // 页码按钮
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            // 第一页
+            if (startPage > 1) {
+                const firstBtn = createPageButton(1);
+                pagination.appendChild(firstBtn);
+
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '0 5px';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+
+            // 中间页码
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = createPageButton(i);
+                pagination.appendChild(pageBtn);
+            }
+
+            // 最后一页
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '0 5px';
+                    pagination.appendChild(ellipsis);
+                }
+
+                const lastBtn = createPageButton(totalPages);
+                pagination.appendChild(lastBtn);
+            }
+
+            // 下一页按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.title = '下一页';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // 创建页码按钮
+        function createPageButton(pageNum) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `page-btn ${pageNum === currentPage ? 'active' : ''}`;
+            pageBtn.textContent = pageNum;
+            pageBtn.title = `第 ${pageNum} 页`;
+            pageBtn.addEventListener('click', () => {
+                currentPage = pageNum;
+                renderTable();
+            });
+            return pageBtn;
+        }
+
+        // 添加表格按钮事件监听器
+        function addTableButtonListeners() {
+            // 查看按钮
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const studentId = this.getAttribute('data-id');
+                    showStudentDetail(studentId);
+                });
+            });
+
+            // 编辑按钮
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const studentId = this.getAttribute('data-id');
+                    openEditModal(studentId);
+                });
+            });
+
+            // 删除按钮
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const studentId = this.getAttribute('data-id');
+                    deleteStudent(studentId);
+                });
+            });
+
+            // 学生选择复选框
+            document.querySelectorAll('.student-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const studentId = this.getAttribute('data-id');
+                    if (this.checked) {
+                        selectedStudents.add(studentId);
+                        this.closest('tr').classList.add('selected');
+                    } else {
+                        selectedStudents.delete(studentId);
+                        this.closest('tr').classList.remove('selected');
+                        selectAllCheckbox.checked = false;
+                    }
+                    updateBatchDeleteButton();
+                });
+            });
+        }
+
+        // 处理全选
+        function handleSelectAll() {
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            const pageStudents = filteredStudents.slice(
+                (currentPage - 1) * pageSize,
+                Math.min(currentPage * pageSize, filteredStudents.length)
+            );
+
+            if (selectAllCheckbox.checked) {
+                // 选择当前页所有学生
+                pageStudents.forEach(student => {
+                    selectedStudents.add(student.studentId);
+                });
+                checkboxes.forEach(cb => cb.checked = true);
+                document.querySelectorAll('#studentTableBody tr').forEach(tr => {
+                    tr.classList.add('selected');
+                });
+            } else {
+                // 取消选择当前页所有学生
+                pageStudents.forEach(student => {
+                    selectedStudents.delete(student.studentId);
+                });
+                checkboxes.forEach(cb => cb.checked = false);
+                document.querySelectorAll('#studentTableBody tr').forEach(tr => {
+                    tr.classList.remove('selected');
+                });
+            }
+
+            updateBatchDeleteButton();
+        }
+
+        // 更新批量删除按钮显示状态
+        function updateBatchDeleteButton() {
+            if (selectedStudents.size > 0) {
+                batchDeleteBtn.style.display = 'inline-block';
+                batchDeleteBtn.textContent = `批量删除 (${selectedStudents.size})`;
+                batchDeleteBtn.title = `删除选中的 ${selectedStudents.size} 名学生`;
+            } else {
+                batchDeleteBtn.style.display = 'none';
+            }
+        }
+
+        // 处理批量删除
+        function handleBatchDelete() {
+            if (selectedStudents.size === 0) {
+                alert('请先选择要删除的学生！');
+                return;
+            }
+
+            if (!confirm(`确定要删除选中的 ${selectedStudents.size} 名学生吗？此操作不可恢复！`)) {
+                return;
+            }
+
+            // 从students数组中删除选中的学生
+            const originalLength = students.length;
+            students = students.filter(student => !selectedStudents.has(student.studentId));
+            const deletedCount = originalLength - students.length;
+
+            // 加密保存到localStorage
+            saveStudentsToLocalStorage();
+
+            // 清空选择
+            selectedStudents.clear();
+            selectAllCheckbox.checked = false;
+
+            // 重新加载数据
+            filterStudents();
+
+            alert(`成功删除 ${deletedCount} 名学生！`);
+        }
+
+        // 显示学生详情
+        function showStudentDetail(studentId) {
+            const student = students.find(s => s.studentId === studentId);
+            if (!student) {
+                alert('学生信息不存在！');
+                return;
+            }
+
+            const detailContent = document.getElementById('detailContent');
+
+            detailContent.innerHTML = `
+                <div class="detail-view">
+                    <div class="detail-card">
+                        <h3>基本信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">学号：</span>
+                            <span class="detail-value">${student.studentId || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">注册号：</span>
+                            <span class="detail-value">${student.registerId || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">姓名：</span>
+                            <span class="detail-value">${student.name || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">性别：</span>
+                            <span class="detail-value">${student.gender || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">出生年月：</span>
+                            <span class="detail-value">${student.birthDate ? new Date(student.birthDate).toLocaleDateString() : '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">身份证号：</span>
+                            <span class="detail-value">${student.idCard || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">民族：</span>
+                            <span class="detail-value">${student.ethnicity || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">政治面貌：</span>
+                            <span class="detail-value">${student.politicalStatus || '未填写'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3>学业信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">学院：</span>
+                            <span class="detail-value">${student.college || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">年级：</span>
+                            <span class="detail-value">${student.grade || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">专业分类：</span>
+                            <span class="detail-value">${student.majorCategory || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">专业：</span>
+                            <span class="detail-value">${student.major || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">班级：</span>
+                            <span class="detail-value">${student.class || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">高职毕业院校：</span>
+                            <span class="detail-value">${student.graduationSchool || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">升学成绩：</span>
+                            <span class="detail-value">${student.admissionScore || '未填写'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3>联系信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">学生联系方式：</span>
+                            <span class="detail-value">${student.phone || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">本人QQ号：</span>
+                            <span class="detail-value">${student.qq || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">宿舍号：</span>
+                            <span class="detail-value">${student.dormitory || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">部门：</span>
+                            <span class="detail-value">${student.department || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">生源省份：</span>
+                            <span class="detail-value">${student.sourceProvince || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">籍贯：</span>
+                            <span class="detail-value">${student.hometown || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">家庭地址：</span>
+                            <span class="detail-value">${student.homeAddress || '未填写'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3>家庭信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">父亲姓名：</span>
+                            <span class="detail-value">${student.fatherName || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">父亲联系方式：</span>
+                            <span class="detail-value">${student.fatherPhone || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">父亲身份证件号：</span>
+                            <span class="detail-value">${student.fatherIdCard || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">母亲姓名：</span>
+                            <span class="detail-value">${student.motherName || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">母亲联系方式：</span>
+                            <span class="detail-value">${student.motherPhone || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">母亲身份证件号：</span>
+                            <span class="detail-value">${student.motherIdCard || '未填写'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3>其他信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">身高(cm)：</span>
+                            <span class="detail-value">${student.height || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">体重(kg)：</span>
+                            <span class="detail-value">${student.weight || '未填写'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">创建时间：</span>
+                            <span class="detail-value">${student.createTime || '未记录'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">最后修改：</span>
+                            <span class="detail-value">${student.updateTime || '未记录'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            detailModal.style.display = 'flex';
+        }
+
+        // 打开编辑模态框
+        function openEditModal(studentId = null) {
+            const modalTitle = document.getElementById('editModalTitle');
+            const studentIdField = document.getElementById('editStudentId');
+
+            if (studentId) {
+                // 编辑模式
+                modalTitle.textContent = '编辑学生信息';
+                const student = students.find(s => s.studentId === studentId);
+
+                if (student) {
+                    // 填充表单
+                    studentIdField.value = student.studentId;
+                    document.getElementById('studentId').value = student.studentId;
+                    document.getElementById('registerId').value = student.registerId || '';
+                    document.getElementById('name').value = student.name;
+                    document.getElementById('gender').value = student.gender || '男';
+                    document.getElementById('college').value = student.college || '';
+                    document.getElementById('grade').value = student.grade || '';
+                    document.getElementById('majorCategory').value = student.majorCategory || '';
+                    document.getElementById('major').value = student.major || '';
+                    document.getElementById('class').value = student.class || '';
+                    document.getElementById('birthDate').value = student.birthDate || '';
+                    document.getElementById('idCard').value = student.idCard || '';
+                    document.getElementById('graduationSchool').value = student.graduationSchool || '';
+                    document.getElementById('ethnicity').value = student.ethnicity || '';
+                    document.getElementById('politicalStatus').value = student.politicalStatus || '';
+                    document.getElementById('sourceProvince').value = student.sourceProvince || '';
+                    document.getElementById('homeAddress').value = student.homeAddress || '';
+                    document.getElementById('phone').value = student.phone || '';
+                    document.getElementById('fatherName').value = student.fatherName || '';
+                    document.getElementById('fatherPhone').value = student.fatherPhone || '';
+                    document.getElementById('fatherIdCard').value = student.fatherIdCard || '';
+                    document.getElementById('motherName').value = student.motherName || '';
+                    document.getElementById('motherPhone').value = student.motherPhone || '';
+                    document.getElementById('motherIdCard').value = student.motherIdCard || '';
+                    document.getElementById('dormitory').value = student.dormitory || '';
+                    document.getElementById('qq').value = student.qq || '';
+                    document.getElementById('height').value = student.height || '';
+                    document.getElementById('weight').value = student.weight || '';
+                    document.getElementById('admissionScore').value = student.admissionScore || '';
+                    document.getElementById('hometown').value = student.hometown || '';
+                    document.getElementById('department').value = student.department || '';
+                }
+            } else {
+                // 新增模式
+                modalTitle.textContent = '新增学生信息';
+                studentIdField.value = '';
+                // 生成学号建议
+                const currentYear = new Date().getFullYear();
+                const lastStudent = students[students.length - 1];
+                let newId = `${currentYear}0001`;
+                if (lastStudent && lastStudent.studentId) {
+                    const lastId = parseInt(lastStudent.studentId);
+                    if (!isNaN(lastId)) {
+                        newId = (lastId + 1).toString();
+                    }
+                }
+                document.getElementById('studentId').value = newId;
+            }
+
+            // 更新部门列表
+            updateDepartmentList();
+
+            editModal.style.display = 'flex';
+        }
+
+        // 处理保存学生
+        function handleSaveStudent(e) {
+            e.preventDefault();
+
+            // 获取表单数据
+            const studentId = document.getElementById('editStudentId').value;
+            const isEdit = !!studentId;
+
+            // 创建学生对象
+            const student = {
+                studentId: document.getElementById('studentId').value.trim(),
+                registerId: document.getElementById('registerId').value.trim(),
+                name: document.getElementById('name').value.trim(),
+                gender: document.getElementById('gender').value,
+                college: document.getElementById('college').value.trim(),
+                grade: document.getElementById('grade').value.trim(),
+                majorCategory: document.getElementById('majorCategory').value.trim(),
+                major: document.getElementById('major').value.trim(),
+                class: document.getElementById('class').value.trim(),
+                birthDate: document.getElementById('birthDate').value,
+                idCard: document.getElementById('idCard').value.trim(),
+                graduationSchool: document.getElementById('graduationSchool').value.trim(),
+                ethnicity: document.getElementById('ethnicity').value.trim(),
+                politicalStatus: document.getElementById('politicalStatus').value.trim(),
+                sourceProvince: document.getElementById('sourceProvince').value.trim(),
+                homeAddress: document.getElementById('homeAddress').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                fatherName: document.getElementById('fatherName').value.trim(),
+                fatherPhone: document.getElementById('fatherPhone').value.trim(),
+                fatherIdCard: document.getElementById('fatherIdCard').value.trim(),
+                motherName: document.getElementById('motherName').value.trim(),
+                motherPhone: document.getElementById('motherPhone').value.trim(),
+                motherIdCard: document.getElementById('motherIdCard').value.trim(),
+                dormitory: document.getElementById('dormitory').value.trim(),
+                qq: document.getElementById('qq').value.trim(),
+                height: document.getElementById('height').value ? parseFloat(document.getElementById('height').value) : null,
+                weight: document.getElementById('weight').value ? parseFloat(document.getElementById('weight').value) : null,
+                admissionScore: document.getElementById('admissionScore').value ? parseFloat(document.getElementById('admissionScore').value) : null,
+                hometown: document.getElementById('hometown').value.trim(),
+                department: document.getElementById('department').value.trim(),
+                updateTime: new Date().toLocaleString()
+            };
+
+            // 验证必填字段
+            if (!student.studentId || !student.name || !student.department) {
+                alert('请填写学号、姓名和部门！');
+                return;
+            }
+
+            // 验证学号格式
+            if (!/^\d{8,}$/.test(student.studentId)) {
+                alert('学号应为8位以上数字！');
+                return;
+            }
+
+            // 验证学号是否重复（新增时）
+            if (!isEdit && students.find(s => s.studentId === student.studentId)) {
+                alert('学号已存在，请使用不同的学号！');
+                return;
+            }
+
+            if (isEdit) {
+                // 更新现有学生
+                const index = students.findIndex(s => s.studentId === studentId);
+                if (index !== -1) {
+                    // 保留创建时间
+                    student.createTime = students[index].createTime || new Date().toLocaleString();
+                    students[index] = student;
+                }
+            } else {
+                // 添加创建时间
+                student.createTime = new Date().toLocaleString();
+                // 添加新学生
+                students.push(student);
+            }
+
+            // 加密保存到localStorage
+            saveStudentsToLocalStorage();
+
+            // 关闭模态框
+            editModal.style.display = 'none';
+
+            // 重新加载数据
+            filterStudents();
+
+            // 提取动态表头
+            extractDynamicHeaders();
+
+            // 更新部门筛选选项
+            updateDepartmentFilter();
+
+            // 显示成功消息
+            showMessage(`学生${isEdit ? '更新' : '添加'}成功！`, 'success');
+        }
+
+        // 删除学生
+        function deleteStudent(studentId) {
+            const student = students.find(s => s.studentId === studentId);
+            if (!student) return;
+
+            if (!confirm(`确定要删除学生"${student.name}"（学号：${studentId}）吗？此操作不可恢复！`)) {
+                return;
+            }
+
+            const index = students.findIndex(s => s.studentId === studentId);
+            if (index !== -1) {
+                students.splice(index, 1);
+                saveStudentsToLocalStorage();
+                filterStudents();
+                showMessage('学生删除成功！', 'success');
+            }
+        }
+
+        // 更新部门筛选选项
+        function updateDepartmentFilter() {
+            // 获取所有部门
+            const departments = [...new Set(students.map(s => s.department).filter(d => d))].sort();
+
+            // 清空现有选项
+            departmentFilter.innerHTML = '<option value="">所有部门</option>';
+
+            // 添加部门选项
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                departmentFilter.appendChild(option);
+            });
+        }
+
+        // 更新部门列表（用于输入建议）
+        function updateDepartmentList() {
+            const departmentList = document.getElementById('departmentList');
+            departmentList.innerHTML = '';
+
+            const departments = [...new Set(students.map(s => s.department).filter(d => d))].sort();
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                departmentList.appendChild(option);
+            });
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            totalStudentsEl.textContent = filteredStudents.length;
+
+            const maleCount = filteredStudents.filter(s => s.gender === '男').length;
+            const femaleCount = filteredStudents.filter(s => s.gender === '女').length;
+
+            maleStudentsEl.textContent = maleCount;
+            femaleStudentsEl.textContent = femaleCount;
+
+            // 计算部门数量
+            const departments = new Set(filteredStudents.map(s => s.department).filter(d => d));
+            totalDepartmentsEl.textContent = departments.size;
+        }
+
+        // 处理导入（包括普通和加密）
+        function handleImport() {
+            const activeTab = document.querySelector('.import-type-tab.active').getAttribute('data-type');
+
+            if (activeTab === 'plain') {
+                handlePlainImport();
+            } else {
+                handleEncryptedImport();
+            }
+        }
+
+        // 处理普通文本导入
+        function handlePlainImport() {
+            const file = importBatchFile.files[0];
+            if (!file) {
+                alert('请先选择文件！');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const content = e.target.result;
+                    const importedStudents = parseBatchImport(content);
+
+                    if (importedStudents.length === 0) {
+                        alert('未找到有效的学生数据！');
+                        return;
+                    }
+
+                    // 验证导入的数据
+                    const validStudents = importedStudents.filter(student => {
+                        return student.studentId && student.name && student.department;
+                    });
+
+                    if (validStudents.length === 0) {
+                        alert('导入的数据缺少必要字段（学号、姓名、部门）！');
+                        return;
+                    }
+
+                    // 添加导入的学生
+                    let addedCount = 0;
+                    let updatedCount = 0;
+
+                    validStudents.forEach(student => {
+                        // 检查学号是否已存在
+                        const existingIndex = students.findIndex(s => s.studentId === student.studentId);
+                        if (existingIndex !== -1) {
+                            // 更新现有记录
+                            student.createTime = students[existingIndex].createTime || new Date().toLocaleString();
+                            student.updateTime = new Date().toLocaleString();
+                            students[existingIndex] = student;
+                            updatedCount++;
+                        } else {
+                            // 添加新记录
+                            student.createTime = new Date().toLocaleString();
+                            student.updateTime = new Date().toLocaleString();
+                            students.push(student);
+                            addedCount++;
+                        }
+                    });
+
+                    // 加密保存到localStorage
+                    saveStudentsToLocalStorage();
+
+                    // 关闭模态框
+                    importModal.style.display = 'none';
+
+                    // 重新加载数据
+                    filterStudents();
+
+                    // 提取动态表头
+                    extractDynamicHeaders();
+
+                    // 更新部门筛选选项
+                    updateDepartmentFilter();
+
+                    alert(`成功导入学生数据！\n新增：${addedCount} 名\n更新：${updatedCount} 名`);
+
+                    // 重置文件选择
+                    importBatchFile.value = '';
+                    batchFileName.textContent = '未选择文件';
+                } catch (error) {
+                    console.error('文件解析失败:', error);
+                    alert('文件解析失败：' + error.message);
+                }
+            };
+
+            reader.onerror = function () {
+                alert('读取文件失败！');
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        // 处理加密文件导入
+        function handleEncryptedImport() {
+            const file = importEncryptedFile.files[0];
+            if (!file) {
+                alert('请先选择加密文件！');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const encryptedContent = e.target.result.trim();
+
+                    if (!encryptedContent) {
+                        alert('文件内容为空！');
+                        return;
+                    }
+
+                    console.log('读取的加密内容长度:', encryptedContent.length);
+                    console.log('加密内容前100字符:', encryptedContent.substring(0, 100));
+
+                    // 尝试解密数据
+                    const decryptedJson = dataDecrypt(encryptedContent);
+
+                    if (!decryptedJson) {
+                        alert('解密失败！请检查文件是否正确。');
+                        return;
+                    }
+
+                    console.log('解密后JSON长度:', decryptedJson.length);
+                    console.log('解密内容前200字符:', decryptedJson.substring(0, 200));
+
+                    let decryptedData;
+                    try {
+                        decryptedData = JSON.parse(decryptedJson);
+                    } catch (parseError) {
+                        console.error('JSON解析错误:', parseError);
+                        console.error('错误位置:', parseError.message);
+
+                        // 尝试修复常见的JSON格式问题
+                        try {
+                            // 移除可能的BOM字符
+                            const fixedJson = decryptedJson.replace(/^\uFEFF/, '');
+                            // 尝试再次解析
+                            decryptedData = JSON.parse(fixedJson);
+                        } catch (fixedError) {
+                            alert('文件格式不正确，请使用本系统导出的加密文件！\n错误详情：' + fixedError.message);
+                            return;
+                        }
+                    }
+
+                    // 验证数据完整性
+                    if (!decryptedData || typeof decryptedData !== 'object') {
+                        alert('解密后的数据格式不正确！');
+                        return;
+                    }
+
+                    // 检查版本
+                    if (!decryptedData.version) {
+                        console.warn('文件没有版本信息，可能是旧格式');
+                    } else if (decryptedData.version !== '2.0') {
+                        console.warn('文件版本不匹配，尝试导入');
+                    }
+
+                    // 验证数据结构
+                    if (!decryptedData.students || !Array.isArray(decryptedData.students)) {
+                        alert('数据格式不正确，缺少学生数据！');
+                        return;
+                    }
+
+                    const importedStudents = decryptedData.students;
+
+                    if (!confirm(`即将导入 ${importedStudents.length} 名学生数据。\n\n导入选项：\n确定 - 完全覆盖现有数据\n取消 - 合并导入（跳过重复学号）`)) {
+                        // 合并导入模式
+                        handleMergeImport(importedStudents, decryptedData);
+                    } else {
+                        // 完全覆盖模式
+                        handleFullImport(importedStudents, decryptedData);
+                    }
+
+                } catch (error) {
+                    console.error('加密文件导入失败:', error);
+                    alert('导入失败：' + error.message + '\n请检查文件格式。');
+                }
+            };
+
+            reader.onerror = function () {
+                alert('读取文件失败！');
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        // 处理完全覆盖导入
+        function handleFullImport(importedStudents, decryptedData) {
+            // 验证学生数据的完整性
+            const validStudents = importedStudents.filter(student => {
+                return student && student.studentId && student.name;
+            });
+
+            if (validStudents.length === 0) {
+                alert('导入的数据中没有有效的学生记录！');
+                return;
+            }
+
+            if (validStudents.length < importedStudents.length) {
+                console.warn(`过滤了 ${importedStudents.length - validStudents.length} 条无效记录`);
+            }
+
+            // 替换现有数据
+            students = validStudents.map(student => {
+                // 确保每条记录都有完整的时间戳
+                if (!student.createTime) {
+                    student.createTime = new Date().toLocaleString();
+                }
+                if (!student.updateTime) {
+                    student.updateTime = new Date().toLocaleString();
+                }
+                return student;
+            });
+
+            // 保存表头设置（如果存在）
+            if (decryptedData.headerSettings) {
+                try {
+                    const settings = decryptedData.headerSettings;
+
+                    // 更新基本表头
+                    settings.basicHeaders?.forEach(savedHeader => {
+                        const existingHeader = basicHeaders.find(h => h.key === savedHeader.key);
+                        if (existingHeader && !existingHeader.fixed) {
+                            existingHeader.visible = savedHeader.visible;
+                            if (savedHeader.name) {
+                                existingHeader.name = savedHeader.name;
+                            }
+                        }
+                    });
+
+                    // 更新动态表头
+                    if (settings.dynamicHeaders) {
+                        dynamicHeaders = settings.dynamicHeaders;
+                    }
+
+                    saveHeaderSettings();
+                } catch (e) {
+                    console.warn('恢复表头设置失败:', e);
+                }
+            }
+
+            // 加密保存到localStorage
+            saveStudentsToLocalStorage();
+
+            // 关闭模态框
+            importModal.style.display = 'none';
+
+            // 重置表单
+            importEncryptedFile.value = '';
+            encryptedFileName.textContent = '未选择文件';
+
+            // 重新加载数据
+            filterStudents();
+
+            // 提取动态表头
+            extractDynamicHeaders();
+
+            // 更新部门筛选选项
+            updateDepartmentFilter();
+
+            alert(`成功导入 ${validStudents.length} 名学生数据！`);
+        }
+
+        // 处理合并导入
+        function handleMergeImport(importedStudents, decryptedData) {
+            const validStudents = importedStudents.filter(student => {
+                return student && student.studentId && student.name;
+            });
+
+            if (validStudents.length === 0) {
+                alert('导入的数据中没有有效的学生记录！');
+                return;
+            }
+
+            let addedCount = 0;
+            let updatedCount = 0;
+
+            validStudents.forEach(student => {
+                // 检查学号是否已存在
+                const existingIndex = students.findIndex(s => s.studentId === student.studentId);
+
+                if (existingIndex !== -1) {
+                    // 更新现有记录（保留原始创建时间）
+                    const originalCreateTime = students[existingIndex].createTime;
+                    student.createTime = originalCreateTime || new Date().toLocaleString();
+                    student.updateTime = new Date().toLocaleString();
+                    students[existingIndex] = student;
+                    updatedCount++;
+                } else {
+                    // 添加新记录
+                    student.createTime = new Date().toLocaleString();
+                    student.updateTime = new Date().toLocaleString();
+                    students.push(student);
+                    addedCount++;
+                }
+            });
+
+            // 加密保存到localStorage
+            saveStudentsToLocalStorage();
+
+            // 关闭模态框
+            importModal.style.display = 'none';
+
+            // 重置表单
+            importEncryptedFile.value = '';
+            encryptedFileName.textContent = '未选择文件';
+
+            // 重新加载数据
+            filterStudents();
+
+            // 提取动态表头
+            extractDynamicHeaders();
+
+            // 更新部门筛选选项
+            updateDepartmentFilter();
+
+            alert(`合并导入完成！\n新增：${addedCount} 条\n更新：${updatedCount} 条`);
+        }
+
+        // 解析批量导入数据
+        function parseBatchImport(content) {
+            const students = [];
+            const studentBlocks = content.split('---');
+
+            studentBlocks.forEach(block => {
+                if (block.trim() === '') return;
+
+                const student = {};
+                const lines = block.split('\n');
+
+                lines.forEach(line => {
+                    if (line.trim() === '') return;
+
+                    const colonIndex = line.indexOf('：');
+                    if (colonIndex === -1) return;
+
+                    const key = line.substring(0, colonIndex).trim();
+                    let value = line.substring(colonIndex + 1).trim();
+
+                    // 映射键名
+                    const keyMap = {
+                        '学号': 'studentId',
+                        '注册号': 'registerId',
+                        '姓名': 'name',
+                        '性别': 'gender',
+                        '学院': 'college',
+                        '年级': 'grade',
+                        '专业分类': 'majorCategory',
+                        '专业': 'major',
+                        '班级': 'class',
+                        '出生年月': 'birthDate',
+                        '身份证号': 'idCard',
+                        '高职毕业院校': 'graduationSchool',
+                        '民族': 'ethnicity',
+                        '政治面貌': 'politicalStatus',
+                        '生源省份': 'sourceProvince',
+                        '家庭住址': 'homeAddress',
+                        '学生联系方式': 'phone',
+                        '父亲姓名': 'fatherName',
+                        '父亲联系方式': 'fatherPhone',
+                        '父亲身份证件号': 'fatherIdCard',
+                        '母亲姓名': 'motherName',
+                        '母亲联系方式': 'motherPhone',
+                        '母亲身份证件号': 'motherIdCard',
+                        '宿舍号': 'dormitory',
+                        '本人QQ号': 'qq',
+                        '身高': 'height',
+                        '体重': 'weight',
+                        '升学成绩': 'admissionScore',
+                        '籍贯': 'hometown',
+                        '部门': 'department'
+                    };
+
+                    const mappedKey = keyMap[key];
+                    if (mappedKey) {
+                        // 处理数值字段
+                        if (mappedKey === 'height' || mappedKey === 'weight' || mappedKey === 'admissionScore') {
+                            student[mappedKey] = value ? parseFloat(value) : null;
+                        } else if (mappedKey === 'birthDate') {
+                            // 处理日期格式
+                            if (value) {
+                                // 尝试转换日期格式
+                                const date = new Date(value);
+                                if (!isNaN(date.getTime())) {
+                                    student[mappedKey] = date.toISOString().split('T')[0];
+                                } else {
+                                    student[mappedKey] = value;
+                                }
+                            }
+                        } else {
+                            student[mappedKey] = value;
+                        }
+                    }
+                });
+
+                // 确保有学号和姓名
+                if (student.studentId && student.name) {
+                    students.push(student);
+                }
+            });
+
+            return students;
+        }
+
+        // 加密保存数据
+        function saveEncryptedData() {
+            if (!currentUser) {
+                alert('请先登录！');
+                return;
+            }
+
+            if (students.length === 0) {
+                alert('没有数据可以保存！');
+                return;
+            }
+
+            // 准备完整的数据包
+            const dataToEncrypt = {
+                version: '2.0', // 更新版本号，表示新格式
+                exportDate: new Date().toISOString(),
+                exportBy: currentUser.username,
+                totalCount: students.length,
+                students: students,
+                headerSettings: {
+                    basicHeaders: basicHeaders,
+                    dynamicHeaders: dynamicHeaders
+                }
+            };
+
+            try {
+                // 加密数据
+                const jsonData = JSON.stringify(dataToEncrypt);
+                console.log('原始JSON数据长度:', jsonData.length);
+
+                const encryptedData = dataEncrypt(jsonData);
+                console.log('加密后数据长度:', encryptedData.length);
+
+                // 验证加密是否成功
+                const testDecrypt = dataDecrypt(encryptedData);
+                if (!testDecrypt) {
+                    throw new Error('加密验证失败');
+                }
+
+                console.log('解密验证成功，长度:', testDecrypt.length);
+
+                // 创建并下载文件
+                const timestamp = new Date().toISOString()
+                    .replace(/[:.]/g, '-')
+                    .replace('T', '_')
+                    .split('.')[0];
+                const filename = `学生系统_加密备份_${timestamp}.dat`;
+
+                // 下载文件
+                downloadFile(encryptedData, filename);
+
+                alert(`数据已成功加密保存！共保存 ${students.length} 条记录`);
+
+            } catch (error) {
+                console.error('加密保存错误:', error);
+                alert('加密保存失败：' + error.message + '\n请检查数据格式或重试。');
+            }
+        }
+
+        // 处理导出
+        function handleExport() {
+            const exportFormat = document.getElementById('exportFormat').value;
+            const exportColumns = Array.from(document.getElementById('exportColumns').selectedOptions).map(opt => opt.value);
+
+            if (exportColumns.length === 0) {
+                alert('请至少选择一列进行导出！');
+                return;
+            }
+
+            let exportContent = '';
+
+            if (exportFormat === 'byDepartment') {
+                // 按部门分组导出
+                const departments = {};
+
+                filteredStudents.forEach(student => {
+                    const dept = student.department || '未分配部门';
+                    if (!departments[dept]) {
+                        departments[dept] = [];
+                    }
+                    departments[dept].push(student);
+                });
+
+                // 生成导出内容
+                for (const [dept, deptStudents] of Object.entries(departments)) {
+                    exportContent += `=== ${dept} ===\n\n`;
+
+                    // 为每个学生添加选中的列数据
+                    deptStudents.forEach((student, index) => {
+                        exportContent += `学生 ${index + 1}:\n`;
+                        exportColumns.forEach(col => {
+                            const header = getAllHeaders().find(h => h.key === col);
+                            const headerName = header ? header.name : getFieldChineseName(col);
+                            let value = student[col] || '';
+                            if (value && typeof value === 'object') {
+                                value = JSON.stringify(value);
+                            }
+                            exportContent += `${headerName}：${value}\n`;
+                        });
+                        exportContent += '\n';
+                    });
+                    exportContent += '\n';
+                }
+            } else {
+                // 完整数据导出
+                const headers = getAllHeaders();
+                const selectedHeaders = headers.filter(header => exportColumns.includes(header.key));
+
+                // 添加表头
+                const headerNames = selectedHeaders.map(header => header.name);
+                exportContent = headerNames.join(',') + '\n';
+
+                // 添加数据行
+                filteredStudents.forEach(student => {
+                    const row = selectedHeaders.map(header => {
+                        let value = student[header.key];
+                        if (value === undefined || value === null) value = '';
+                        if (typeof value === 'object') {
+                            value = JSON.stringify(value);
+                        }
+                        // 处理CSV特殊字符
+                        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                            value = '"' + value.replace(/"/g, '""') + '"';
+                        }
+                        return value;
+                    }).join(',');
+                    exportContent += row + '\n';
+                });
+            }
+
+            // 创建并下载文件
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const filename = `学生信息_${timestamp}.${exportFormat === 'byDepartment' ? 'txt' : 'csv'}`;
+            downloadFile(exportContent, filename);
+
+            // 关闭模态框
+            exportModal.style.display = 'none';
+        }
+
+        // 下载文件
+        function downloadFile(content, filename) {
+            const blob = new Blob(['\uFEFF' + content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        // 创建文件下载
+        // function downloadFile(content, filename) {
+        //     const blob = new Blob([content], { type: 'application/octet-stream' });
+        //     const url = URL.createObjectURL(blob);
+        //     const a = document.createElement('a');
+        //     a.href = url;
+        //     a.download = filename;
+        //     document.body.appendChild(a);
+        //     a.click();
+        //     document.body.removeChild(a);
+        //     URL.revokeObjectURL(url);
+        // }
+
+        // 提取动态表头
+        function extractDynamicHeaders() {
+            const allKeys = new Set();
+
+            // 收集所有学生数据中的所有键
+            students.forEach(student => {
+                Object.keys(student).forEach(key => {
+                    if (key !== 'select' && key !== 'index') {
+                        allKeys.add(key);
+                    }
+                });
+            });
+
+            // 过滤掉基本表头中已经存在的键
+            const basicKeys = basicHeaders.map(header => header.key);
+            const dynamicKeys = Array.from(allKeys).filter(key => !basicKeys.includes(key));
+
+            // 转换为动态表头格式
+            dynamicHeaders = dynamicKeys.map(key => {
+                // 查找是否已存在此表头
+                const existingHeader = dynamicHeaders.find(header => header.key === key);
+
+                if (existingHeader) {
+                    return existingHeader; // 保留现有的设置
+                } else {
+                    // 创建新表头
+                    return {
+                        key: key,
+                        name: getFieldChineseName(key), // 使用中文名称
+                        visible: true, // 默认可见
+                        fixed: false
+                    };
+                }
+            });
+
+            // 按字母顺序排序
+            dynamicHeaders.sort((a, b) => a.name.localeCompare(b.name));
+
+            // 保存表头设置
+            saveHeaderSettings();
+        }
+
+        // 获取所有表头（基本+动态）
+        function getAllHeaders() {
+            return [...basicHeaders, ...dynamicHeaders];
+        }
+
+        // 渲染表头列表
+        function renderHeaderList() {
+            headerList.innerHTML = '';
+
+            const allHeaders = getAllHeaders();
+
+            allHeaders.forEach(header => {
+                const headerItem = document.createElement('div');
+                headerItem.className = 'header-item';
+
+                headerItem.innerHTML = `
+                    <label>
+                        <input type="checkbox" class="header-visibility" data-key="${header.key}" ${header.visible ? 'checked' : ''} ${header.fixed ? 'disabled' : ''}>
+                        <span>${header.name} (${header.key})</span>
+                        ${header.fixed ? '<span style="color: #666; font-size: 12px;">固定</span>' : ''}
+                    </label>
+                    ${!header.fixed ? `
+                        <div>
+                            <button class="btn btn-warning btn-sm rename-header-btn" data-key="${header.key}">重命名</button>
+                            <button class="btn btn-danger btn-sm delete-header-btn" data-key="${header.key}">删除</button>
+                        </div>
+                    ` : ''}
+                `;
+
+                headerList.appendChild(headerItem);
+            });
+
+            // 添加重命名和删除按钮事件
+            document.querySelectorAll('.rename-header-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const key = this.getAttribute('data-key');
+                    const currentName = dynamicHeaders.find(h => h.key === key)?.name || key;
+                    const newName = prompt('请输入新的表头名称：', currentName);
+                    if (newName && newName.trim()) {
+                        renameHeader(key, newName.trim());
+                    }
+                });
+            });
+
+            document.querySelectorAll('.delete-header-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const key = this.getAttribute('data-key');
+                    const header = dynamicHeaders.find(h => h.key === key);
+                    if (header && confirm(`确定要删除表头"${header.name}"吗？`)) {
+                        deleteHeader(key);
+                    }
+                });
+            });
+
+            // 添加可见性切换事件
+            document.querySelectorAll('.header-visibility').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const key = this.getAttribute('data-key');
+                    const checked = this.checked;
+                    toggleHeaderVisibility(key, checked);
+                });
+            });
+        }
+
+        // 切换表头可见性
+        function toggleHeaderVisibility(key, visible) {
+            // 在动态表头中查找
+            let header = dynamicHeaders.find(h => h.key === key);
+            if (header) {
+                header.visible = visible;
+            } else {
+                // 在基本表头中查找
+                header = basicHeaders.find(h => h.key === key);
+                if (header && !header.fixed) {
+                    header.visible = visible;
+                }
+            }
+
+            saveHeaderSettings();
+            renderTable();
+        }
+
+        // 重命名表头
+        function renameHeader(key, newName) {
+            let header = dynamicHeaders.find(h => h.key === key);
+            if (header) {
+                header.name = newName;
+                saveHeaderSettings();
+                renderHeaderList();
+                renderTable();
+            }
+        }
+
+        // 删除表头
+        function deleteHeader(key) {
+            dynamicHeaders = dynamicHeaders.filter(h => h.key !== key);
+            saveHeaderSettings();
+            renderHeaderList();
+            renderTable();
+        }
+
+        // 添加新表头
+        function addNewHeader() {
+            const name = newHeaderName.value.trim();
+            if (!name) {
+                alert('请输入表头名称！');
+                return;
+            }
+
+            // 生成key（使用名称的拼音或英文，这里简化处理）
+            const key = name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g, '_');
+
+            // 检查是否已存在
+            if (getAllHeaders().find(h => h.key === key)) {
+                alert('表头已存在！');
+                return;
+            }
+
+            // 添加新表头
+            dynamicHeaders.push({
+                key: key,
+                name: name,
+                visible: true,
+                fixed: false
+            });
+
+            // 清空输入
+            newHeaderName.value = '';
+
+            // 保存并刷新
+            saveHeaderSettings();
+            renderHeaderList();
+            renderTable();
+        }
+
+        // 保存表头设置
+        function saveHeaderSettings() {
+            const headerSettings = {
+                basicHeaders: basicHeaders,
+                dynamicHeaders: dynamicHeaders,
+                version: '1.0',
+                saveTime: new Date().toISOString()
+            };
+            // 加密保存表头设置
+            try {
+                const jsonSettings = JSON.stringify(headerSettings);
+                const encryptedSettings = dataEncrypt(jsonSettings);
+                localStorage.setItem('encryptedHeaderSettings', encryptedSettings);
+            } catch (error) {
+                console.error('保存表头设置失败:', error);
+            }
+        }
+
+        // 加载表头设置
+        function loadHeaderSettings() {
+            const encryptedSettings = localStorage.getItem('encryptedHeaderSettings');
+            if (encryptedSettings) {
+                try {
+                    // 解密表头设置
+                    const decryptedJson = dataDecrypt(encryptedSettings);
+                    if (!decryptedJson) {
+                        console.warn('解密表头设置失败');
+                        return;
+                    }
+
+                    const settings = JSON.parse(decryptedJson);
+                    // 更新基本表头（保留固定属性）
+                    settings.basicHeaders?.forEach(savedHeader => {
+                        const existingHeader = basicHeaders.find(h => h.key === savedHeader.key);
+                        if (existingHeader && !existingHeader.fixed) {
+                            existingHeader.visible = savedHeader.visible;
+                            if (savedHeader.name) {
+                                existingHeader.name = savedHeader.name;
+                            }
+                        }
+                    });
+
+                    // 更新动态表头
+                    if (settings.dynamicHeaders) {
+                        dynamicHeaders = settings.dynamicHeaders;
+                    }
+                } catch (e) {
+                    console.error('加载表头设置失败:', e);
+
+                    // 尝试加载旧格式
+                    try {
+                        const savedSettings = localStorage.getItem('headerSettings');
+                        if (savedSettings) {
+                            const settings = JSON.parse(savedSettings);
+                            settings.basicHeaders?.forEach(savedHeader => {
+                                const existingHeader = basicHeaders.find(h => h.key === savedHeader.key);
+                                if (existingHeader && !existingHeader.fixed) {
+                                    existingHeader.visible = savedHeader.visible;
+                                    if (savedHeader.name) {
+                                        existingHeader.name = savedHeader.name;
+                                    }
+                                }
+                            });
+
+                            if (settings.dynamicHeaders) {
+                                dynamicHeaders = settings.dynamicHeaders;
+                            }
+
+                            // 重新加密保存
+                            saveHeaderSettings();
+                            // 删除旧格式
+                            localStorage.removeItem('headerSettings');
+                        }
+                    } catch (e2) {
+                        console.error('加载旧格式表头设置也失败:', e2);
+                    }
+                }
+            } else {
+                // 尝试加载旧格式
+                try {
+                    const savedSettings = localStorage.getItem('headerSettings');
+                    if (savedSettings) {
+                        const settings = JSON.parse(savedSettings);
+                        settings.basicHeaders?.forEach(savedHeader => {
+                            const existingHeader = basicHeaders.find(h => h.key === savedHeader.key);
+                            if (existingHeader && !existingHeader.fixed) {
+                                existingHeader.visible = savedHeader.visible;
+                                if (savedHeader.name) {
+                                    existingHeader.name = savedHeader.name;
+                                }
+                            }
+                        });
+
+                        if (settings.dynamicHeaders) {
+                            dynamicHeaders = settings.dynamicHeaders;
+                        }
+
+                        // 重新加密保存
+                        saveHeaderSettings();
+                        // 删除旧格式
+                        localStorage.removeItem('headerSettings');
+                    }
+                } catch (e) {
+                    console.error('加载旧格式表头设置失败:', e);
+                }
+            }
+        }
+
+        // 更新导出列选项
+        function updateExportColumns() {
+            exportColumns.innerHTML = '';
+
+            const allHeaders = getAllHeaders();
+
+            allHeaders.forEach(header => {
+                // 排除选择列
+                if (header.key === 'select') return;
+
+                const option = document.createElement('option');
+                option.value = header.key;
+                option.textContent = `${header.name} (${header.key})`;
+
+                // 默认选中一些常用列
+                const defaultSelected = ['studentId', 'name', 'gender', 'department', 'college', 'grade', 'major', 'class'];
+                if (defaultSelected.includes(header.key)) {
+                    option.selected = true;
+                }
+
+                exportColumns.appendChild(option);
+            });
+        }
+
+        // 系统健康检查
+        function systemHealthCheck() {
+            const checks = {
+                localStorage: {
+                    test: () => {
+                        try {
+                            localStorage.setItem('test', 'test');
+                            localStorage.removeItem('test');
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    },
+                    message: 'localStorage可用'
+                },
+                jsonParse: {
+                    test: () => {
+                        try {
+                            JSON.parse('{}');
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    },
+                    message: 'JSON解析正常'
+                },
+                studentsData: {
+                    test: () => {
+                        const saved = localStorage.getItem('encryptedStudents');
+                        if (!saved) return true;
+                        try {
+                            const decrypted = dataDecrypt(saved);
+                            if (!decrypted) return false;
+                            JSON.parse(decrypted);
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    },
+                    message: '学生数据完整'
+                }
+            };
+
+            let allPassed = true;
+            const results = [];
+
+            for (const [name, check] of Object.entries(checks)) {
+                if (check.test()) {
+                    results.push(`✓ ${check.message}`);
+                } else {
+                    results.push(`✗ ${name} 检查失败`);
+                    allPassed = false;
+                }
+            }
+
+            if (!allPassed) {
+                console.warn('系统健康检查发现问题:', results);
+                // 可以在这里显示警告或自动修复
+            }
+
+            return allPassed;
+        }
+
+        // 定期自动保存
+        function setupAutoSave() {
+            setInterval(() => {
+                if (students.length > 0) {
+                    saveStudentsToLocalStorage();
+                    console.log('数据已自动保存');
+                }
+            }, 60000); // 每分钟自动保存一次
+        }
+
+        // 初始化自动保存
+        setupAutoSave();
+
+        // 执行系统健康检查
+        systemHealthCheck();
+    </script>
+</body>
+
+</html>
