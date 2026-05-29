@@ -9,7 +9,7 @@
 	<meta http-equiv="Cache-Control" content="no-siteapp">
 	<meta http-equiv="x-dns-prefetch-control" content="on">
 	<link rel="shortcut icon" href="./global-static/images/myAutor.jpg">
-	<title itemprop="name">WReptileのyou-首页</title>
+	<title itemprop="name">Wyc0620のyou-首页</title>
 	<link rel="stylesheet" href="./global-static/css/style5.18.2.css" type="text/css">
 	<link rel="stylesheet" href="./global-static/css/OwO.css" type="text/css">
 	<link rel="stylesheet" href="./global-static/css/global.css">
@@ -109,7 +109,7 @@
 																style="cursor: url(&quot;./global-static/images/cur02.cur&quot;), pointer;">
 																📟随机抽取</a></li>
 									
-														<li><a href="https://github.com/WReptile1023/BeiZheBible"
+														<li><a href="https://github.com/wyc0620/BeiZheBible"
 																style="cursor: url(&quot;./global-static/images/cur02.cur&quot;), pointer;">
 																🏆《北浙圣经》</a></li>		
 														<li><a href="./WR_Attendance_Data_Statistics_System.html"
@@ -194,7 +194,7 @@
 							</a>
 						</div>
 						<div class="site-master" itemprop="author">
-							<h2 class="site-master-description scaleup" itemprop="description">WReptile</h2>
+							<h2 class="site-master-description scaleup" itemprop="description">Wyc0620</h2>
 						</div>
 
 						<!-- 动态色彩文字 -->
@@ -413,7 +413,7 @@
 						</h1>
 
 						<!-- 开始文章循环输出 -->
-						<div id="WReptileContent">
+						<div id="Wyc0620Content">
 							<article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
 								<!-- 判断文章输出样式 -->
 								<div class="post-entry">
@@ -495,12 +495,12 @@
 									}
 
 								}
-								document.getElementById('WReptileContent').innerHTML = content
+								document.getElementById('Wyc0620Content').innerHTML = content
 								window.localStorage.setItem('numberContent', 10)
 							});
 						</script>
 					</main>
-					<div id="pagination"><a class="next" id="WReptileAll"
+					<div id="pagination"><a class="next" id="Wyc0620All"
 							style="cursor: url(&quot;./global-static/images/cur02.cur&quot;), pointer; font-weight: bold;">加载更多</a>
 					</div>
 					<!-- 加载逻辑 -->
@@ -535,7 +535,7 @@
 							return content
 						}
 
-						document.getElementById('WReptileAll').onclick = () => {
+						document.getElementById('Wyc0620All').onclick = () => {
 							$.getJSON("./global-static/json/shortText.json", (resp) => {
 								// 每次多渲染10个
 								let index = Number(window.localStorage.getItem('numberContent') === '' | null ? 0 : window.localStorage.getItem('numberContent'))
@@ -560,7 +560,7 @@
 									document.getElementById('pagination').hidden = true
 								}
 								// 插入最终内容
-								document.getElementById('WReptileContent').innerHTML = content
+								document.getElementById('Wyc0620Content').innerHTML = content
 								// 滑动到内容顶部
 								document.querySelector('#scrollspace').scrollIntoView({ behavior: "smooth" })
 							});

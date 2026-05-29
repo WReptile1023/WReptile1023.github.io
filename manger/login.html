@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="shortcut icon" href="../global-static/images/myAutor.jpg">
-    <title itemprop="name">WReptileのyou-后台登录</title>
+    <title itemprop="name">Wyc0620のyou-后台登录</title>
 </head>
 <style>
     body {
@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../global-static/css/element-index.css">
 
     <div class="fu" id="app">
-        <h1>WReptileのyou后台管理系统</h1>
+        <h1>Wyc0620のyou后台管理系统</h1>
         <el-form :model="user" class="demo-ruleForm" label-width="100px" :rules="rules" ref="user">
             <el-form-item label="账户" prop="account">
                 <el-input type="text" v-model="user.account"></el-input>
@@ -64,7 +64,7 @@
         </el-form>
         <el-form style="font-size: 12px;text-align: center;margin-top: 300px;">
             <a style="text-decoration:none;color: black;" href="../index.html">
-                Copyright© 2024 转载请注明原文链接 WReptile AllRights Reserved.</a>
+                Copyright© 2024 转载请注明原文链接 Wyc0620 AllRights Reserved.</a>
             <br>
             <a href="https://beian.miit.gov.cn/" style="text-decoration:none;color: black;" rel="nofollow">
                 陕ICP备2024021970号</a>
@@ -81,7 +81,7 @@
                 var accountV = (rule, value, callback) => {
                     if (value === '') {
                         callback(new Error('请输入账户名'));
-                    } else if (value !== 'WReptile') {
+                    } else if (value !== 'Wyc0620') {
                         callback(new Error('账户名有误，请重新输入'));
                     }
                 };
@@ -111,7 +111,7 @@
             },
             methods: {
                 login() {
-                    // if (this.user.account === 'WReptile' && this.user.password === '20040503') {
+                    // if (this.user.account === 'Wyc0620' && this.user.password === '20040503') {
                     // this.url = './m-shortText.html'
                     window.localStorage.setItem("curraccount", JSON.stringify(this.user))
                     this.user.account = ''

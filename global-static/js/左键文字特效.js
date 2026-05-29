@@ -3,7 +3,7 @@
 var index = 0;
 jQuery(document).ready(function () {
     $(window).click(function (e) {
-        var string = "WReptile";
+        var string = "Wyc0620";
         var strings = string.split('');
         var span = $("<span>").text(strings[index]);
         index = (index + 1) % strings.length;
