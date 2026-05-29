@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -16,14 +17,13 @@
 
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at 10% 20%, rgba(249, 240, 255, 0.9), rgba(224, 234, 255, 0.95)), 
-                        repeating-linear-gradient(45deg, rgba(200, 180, 255, 0.05) 0px, rgba(200, 180, 255, 0.05) 2px, transparent 2px, transparent 8px);
+            background: radial-gradient(circle at 10% 20%, rgba(249, 240, 255, 0.9), rgba(224, 234, 255, 0.95)),
+                repeating-linear-gradient(45deg, rgba(200, 180, 255, 0.05) 0px, rgba(200, 180, 255, 0.05) 2px, transparent 2px, transparent 8px);
             background-attachment: fixed;
             padding: 2rem 1.5rem 3rem;
             position: relative;
         }
 
-        /* 流动光晕背景 */
         body::before {
             content: '';
             position: fixed;
@@ -43,7 +43,6 @@
             z-index: 2;
         }
 
-        /* 头部 */
         .hero {
             text-align: center;
             margin-bottom: 2rem;
@@ -61,7 +60,7 @@
             gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .hero h1 i {
@@ -74,7 +73,7 @@
             color: #4a4e69;
             margin-top: 0.6rem;
             font-weight: 500;
-            background: rgba(255,255,250,0.6);
+            background: rgba(255, 255, 250, 0.6);
             backdrop-filter: blur(8px);
             display: inline-block;
             padding: 0.3rem 1.5rem;
@@ -82,7 +81,6 @@
             font-size: 0.9rem;
         }
 
-        /* 数据源状态条 */
         .data-source-bar {
             background: rgba(255, 255, 245, 0.75);
             backdrop-filter: blur(12px);
@@ -96,7 +94,7 @@
             justify-content: center;
             font-size: 0.8rem;
             font-weight: 500;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .data-badge {
@@ -123,14 +121,22 @@
             transform: scale(0.96);
         }
 
-        /* 卡片区 */
+        .unsaved-badge {
+            background: #ffedd5;
+            color: #d97706;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
         .add-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
             border-radius: 2rem;
             padding: 1.4rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255,255,245,0.8);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 245, 0.8);
             transition: all 0.3s ease;
         }
 
@@ -160,11 +166,11 @@
             width: 100%;
             padding: 12px 18px;
             border: none;
-            background: rgba(255,255,245,0.95);
+            background: rgba(255, 255, 245, 0.95);
             border-radius: 40px;
             font-size: 0.9rem;
             transition: 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(0, 0, 0, 0.02);
             outline: none;
         }
 
@@ -204,7 +210,7 @@
         }
 
         .sec-btn {
-            background: rgba(255,255,245,0.8);
+            background: rgba(255, 255, 245, 0.8);
             backdrop-filter: blur(4px);
             border: none;
             padding: 8px 20px;
@@ -222,10 +228,9 @@
         .sec-btn:hover {
             background: white;
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
-        /* 搜索栏 */
         .search-section {
             margin-bottom: 1.5rem;
             display: flex;
@@ -234,21 +239,24 @@
             flex-wrap: wrap;
             gap: 12px;
         }
+
         .search-box {
             flex: 2;
             min-width: 220px;
-            background: rgba(255,255,245,0.6);
+            background: rgba(255, 255, 245, 0.6);
             backdrop-filter: blur(8px);
             border-radius: 60px;
             display: flex;
             align-items: center;
             padding: 4px 8px 4px 20px;
             gap: 8px;
-            border: 1px solid rgba(255,255,210,0.6);
+            border: 1px solid rgba(255, 255, 210, 0.6);
         }
+
         .search-box i {
             color: #8b7bcb;
         }
+
         .search-box input {
             background: transparent;
             border: none;
@@ -257,39 +265,39 @@
             outline: none;
             font-size: 0.9rem;
         }
+
         .stats {
             display: flex;
             gap: 15px;
-            background: rgba(255,250,240,0.6);
+            background: rgba(255, 250, 240, 0.6);
             backdrop-filter: blur(4px);
             padding: 6px 20px;
             border-radius: 40px;
         }
+
         .badge {
             font-size: 0.8rem;
             font-weight: 600;
             color: #2c3a66;
         }
 
-        /* 网格 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.6rem;
         }
 
-        /* 卡片样式 */
         .card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
             border-radius: 1.8rem;
             transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,240,0.5);
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 240, 0.5);
             cursor: pointer;
             display: flex;
             align-items: center;
-            padding: 0.9rem 1rem 0.9rem 1.2rem;
-            gap: 1rem;
+            padding: 0.8rem 1rem;
+            gap: 0.8rem;
         }
 
         .card:hover {
@@ -299,17 +307,16 @@
         }
 
         .card-icon {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(145deg, #ffe6f0, #e0d9ff);
             border-radius: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #7a3e9c;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             flex-shrink: 0;
         }
 
@@ -319,7 +326,7 @@
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #1e293b;
             white-space: nowrap;
@@ -338,36 +345,55 @@
             gap: 5px;
         }
 
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .edit-btn,
         .delete-btn {
-            background: rgba(255, 180, 180, 0.3);
+            background: rgba(200, 200, 230, 0.4);
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 40px;
+            width: 32px;
+            height: 32px;
+            border-radius: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #c25b6e;
             cursor: pointer;
             transition: 0.2s;
-            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            color: #4f46e5;
+        }
+
+        .edit-btn:hover {
+            background: #c7d2fe;
+            color: #3730a3;
+            transform: scale(1.02);
+        }
+
+        .delete-btn {
+            color: #c25b6e;
         }
 
         .delete-btn:hover {
             background: #ffb4b4;
             color: #a11f3f;
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            background: rgba(255,255,245,0.5);
+            background: rgba(255, 255, 245, 0.5);
             border-radius: 2rem;
             backdrop-filter: blur(8px);
         }
 
-        /* 复制工具区优化 */
         .tools-section {
             display: flex;
             flex-wrap: wrap;
@@ -379,28 +405,32 @@
             margin-bottom: 2rem;
             align-items: center;
             justify-content: flex-start;
-            border: 1px solid rgba(255,225,180,0.5);
+            border: 1px solid rgba(255, 225, 180, 0.5);
         }
+
         .copy-wrapper {
             display: inline-flex;
             align-items: center;
-            background: rgba(255,255,255,0.7);
+            background: rgba(255, 255, 255, 0.7);
             padding: 4px 8px 4px 16px;
             border-radius: 48px;
             gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
+
         k {
             font-family: monospace;
             font-size: 0.85rem;
             color: #1f2b48;
             font-weight: 500;
         }
+
         k.secret {
             font-family: monospace;
             -webkit-text-security: disc;
             text-security: disc;
         }
+
         .copy-wrapper button {
             background: #4f46e5;
             border: none;
@@ -411,12 +441,15 @@
             cursor: pointer;
             transition: 0.2s;
         }
+
         .copy-wrapper button:hover {
             background: #6366f1;
         }
+
         .copy-wrapper button.copied {
             background: #10b981;
         }
+
         .toast-msg {
             position: fixed;
             bottom: 28px;
@@ -433,356 +466,479 @@
             transition: 0.2s;
             border: 1px solid #ffd966;
         }
+
         @media (max-width: 680px) {
-            body { padding: 1rem; }
-            .hero h1 { font-size: 2rem; }
-            .tools-section { flex-direction: column; align-items: stretch; }
+            body {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tools-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .card-actions {
+                gap: 4px;
+            }
+
+            .edit-btn,
+            .delete-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="hero">
-        <h1><i class="fas fa-compass"></i> 流光快捷导航 <i class="fas fa-sparkles"></i></h1>
-        <div class="subtitle"><i class="fas fa-database"></i> 智能同步 · 优雅启动</div>
-    </div>
+    <div class="container">
+        <div class="hero">
+            <h1><i class="fas fa-compass"></i> 流光快捷导航 <i class="fas fa-sparkles"></i></h1>
+            <div class="subtitle"><i class="fas fa-database"></i> 智能同步 · 优雅启动 · 增删改即缓存</div>
+        </div>
 
-    <!-- 数据源状态栏 + 手动重试 -->
-    <div style="display: flex; justify-content: center;">
-        <div class="data-source-bar" id="dataSourceStatus">
-            <i class="fas fa-cloud-upload-alt"></i> <span id="sourceText">正在加载数据...</span>
-            <button class="retry-btn" id="retryFetchBtn"><i class="fas fa-sync-alt"></i> 重新加载 data.json</button>
-            <button class="retry-btn" id="quickManualBtn" style="background:#e2e0ff;"><i class="fas fa-folder-open"></i> 手动导入JSON</button>
+        <!-- 数据源状态栏 + 操作 -->
+        <div style="display: flex; justify-content: center;">
+            <div class="data-source-bar" id="dataSourceStatus">
+                <i class="fas fa-cloud-upload-alt"></i> <span id="sourceText">正在初始化...</span>
+                <button class="retry-btn" id="retryFetchBtn"><i class="fas fa-sync-alt"></i> 重新加载
+                    water_hav_data.json</button>
+                <button class="retry-btn" id="quickManualBtn" style="background:#e2e0ff;"><i
+                        class="fas fa-folder-open"></i> 手动导入JSON</button>
+                <span id="unsavedIndicator" style="display:none;" class="unsaved-badge"><i class="fas fa-pen-fancy"></i>
+                    未导出修改</span>
+            </div>
+        </div>
+
+        <!-- 常用复制工具区 (原功能保留) -->
+        <div class="tools-section">
+            <div class="copy-wrapper">
+                <k>254040800337</k><button onclick="copyContent(this)">复制</button>
+            </div>
+            <div class="copy-wrapper">
+                <k>19297641254</k><button onclick="copyContent(this)">复制</button>
+            </div>
+            <div class="copy-wrapper">
+                <k>19836313895</k><button onclick="copyContent(this)">复制</button>
+            </div>
+            <div class="copy-wrapper">
+                <k>2927993281@qq.com</k><button onclick="copyContent(this)">复制</button>
+            </div>
+            <div class="copy-wrapper">
+                <k class="secret" data-value="WM20040503">•••••••••</k><button
+                    onclick="copyPassword(this)">复制(学习通)</button>
+            </div>
+            <div class="copy-wrapper">
+                <k class="secret"
+                    data-value="distributionUrl=https://mirrors.aliyun.com/macports/distfiles/gradle/gradle-8.13-bin.zip">
+                    •••••••••</k><button onclick="copyPassword(this)">复制(Android源)</button>
+            </div>
+        </div>
+
+        <!-- 添加网址区域 -->
+        <div class="add-card">
+            <div class="add-form">
+                <div class="input-group"><label><i class="fas fa-tag"></i> 网站名称</label><input type="text" id="siteName"
+                        placeholder="例如: 小红书"></div>
+                <div class="input-group"><label><i class="fas fa-link"></i> 网址链接</label><input type="text" id="siteUrl"
+                        placeholder="https:// 或 http://"></div>
+                <button class="btn-add" id="addBtn"><i class="fas fa-plus-circle"></i> 添加导航</button>
+            </div>
+            <div class="action-buttons">
+                <button class="sec-btn" id="exportJsonBtn"><i class="fas fa-download"></i> 导出
+                    water_hav_data.json</button>
+                <button class="sec-btn" id="resetDefaultBtn"><i class="fas fa-undo-alt"></i> 重置默认</button>
+                <button class="sec-btn" id="clearAllBtn"><i class="fas fa-trash-alt"></i> 清空全部</button>
+            </div>
+            <div style="font-size:0.7rem; text-align:right; margin-top:10px; color:#5b6e8f;"><i
+                    class="fas fa-info-circle"></i> 增删改自动缓存内存，点击「导出」永久保存为 water_hav_data.json</div>
+        </div>
+
+        <!-- 搜索与统计 -->
+        <div class="search-section">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput"
+                    placeholder="搜索名称或网址..."></div>
+            <div class="stats">
+                <div class="badge"><i class="fas fa-layer-group"></i> 总数：<span id="totalCount">0</span></div>
+            </div>
+        </div>
+
+        <div id="linksGrid" class="grid">
+            <div class="empty-state"><i class="fas fa-spinner fa-pulse"></i>
+                <p>加载中...</p>
+            </div>
         </div>
     </div>
+    <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
 
-    <!-- 常用复制工具区 -->
-    <div class="tools-section">
-        <div class="copy-wrapper"><k>254040800337</k><button onclick="copyContent(this)">复制</button></div>
-        <div class="copy-wrapper"><k>19297641254</k><button onclick="copyContent(this)">复制</button></div>
-        <div class="copy-wrapper"><k>19836313895</k><button onclick="copyContent(this)">复制</button></div>
-        <div class="copy-wrapper"><k>2927993281@qq.com</k><button onclick="copyContent(this)">复制</button></div>
-        <div class="copy-wrapper"><k class="secret" data-value="WM20040503">•••••••••</k><button onclick="copyPassword(this)">复制(学习通)</button></div>
-        <div class="copy-wrapper"><k class="secret" data-value="distributionUrl=https://mirrors.aliyun.com/macports/distfiles/gradle/gradle-8.13-bin.zip">•••••••••</k><button onclick="copyPassword(this)">复制(Andriod源)</button></div>
-    </div>
+    <script>
+        // ---------- 增强默认数据 (8个常用导航) ----------
+        const DEFAULT_LINKS_RAW = [
+            { name: "千问", url: "https://www.qianwen.com/" },
+            { name: "Deepseek", url: "https://chat.deepseek.com/" },
+            { name: "MD转PDF", url: "https://md-to.com/zh-cn/markdown-to-pdf" },
+            { name: "PDF加水印", url: "https://www.ilovepdf.com/zh-cn/pdf_add_watermark" },
+            { name: "微信下载", url: "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.9.exe" },
+            { name: "QQ下载", url: "https://dldir1v6.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.30_260429_x64_01.exe" },
+            { name: "国家版权中心", url: "https://register.ccopyright.com.cn/account.html?current=soft_register" },
+            { name: "河南版权中心", url: "http://hnbq.cn/henanuser/user/copyright/progress-enquiry-aplication/list" },
+        ];
 
-    <!-- 添加网址区域 -->
-    <div class="add-card">
-        <div class="add-form">
-            <div class="input-group"><label><i class="fas fa-tag"></i> 网站名称</label><input type="text" id="siteName" placeholder="例如: 小红书"></div>
-            <div class="input-group"><label><i class="fas fa-link"></i> 网址链接</label><input type="text" id="siteUrl" placeholder="https:// 或 http://"></div>
-            <button class="btn-add" id="addBtn"><i class="fas fa-plus-circle"></i> 添加导航</button>
-        </div>
-        <div class="action-buttons">
-            <button class="sec-btn" id="exportJsonBtn"><i class="fas fa-download"></i> 导出 data.json</button>
-            <button class="sec-btn" id="resetDefaultBtn"><i class="fas fa-undo-alt"></i> 重置默认</button>
-            <button class="sec-btn" id="clearAllBtn"><i class="fas fa-trash-alt"></i> 清空全部</button>
-        </div>
-        <div style="font-size:0.7rem; text-align:right; margin-top:10px; color:#5b6e8f;"><i class="fas fa-info-circle"></i> 支持实时搜索，增删改后记得「导出」保存JSON文件</div>
-    </div>
+        function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 10); }
 
-    <!-- 搜索与统计 -->
-    <div class="search-section">
-        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="搜索名称或网址..."></div>
-        <div class="stats"><div class="badge"><i class="fas fa-layer-group"></i> 总数：<span id="totalCount">0</span></div></div>
-    </div>
+        let links = [];            // 内存缓存（增删改实时变化）
+        let currentFilter = "";
+        let isUnsaved = false;     // 是否有未导出的修改
+        let lastLoadedSource = ""; // 记录数据来源描述
 
-    <div id="linksGrid" class="grid"><div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>加载中...</p></div></div>
-</div>
-<input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+        // 辅助函数
+        function isValidUrl(url) { try { let u = new URL(url); return u.protocol === "http:" || u.protocol === "https:"; } catch (e) { return false; } }
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+        function getFirstChar(name) { let s = name.trim(); if (s.length === 0) return '🌐'; let first = s.charAt(0).toUpperCase(); if (/[A-Za-z0-9]/.test(first)) return first; return s.charAt(0); }
 
-<script>
-    // ---------- 增强默认数据 (包含 data.json 原始五个) ----------
-    const DEFAULT_LINKS_RAW = [
-        { name: "千问", url: "https://www.qianwen.com/" },
-        { name: "Deepseek", url: "https://chat.deepseek.com/" },
-        { name: "MD转PDF", url: "https://md-to.com/zh-cn/markdown-to-pdf" },
-        { name: "PDF加水印", url: "https://www.ilovepdf.com/zh-cn/pdf_add_watermark" },
-        { name: "微信下载", url: "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.9.exe" },
-        { name: "QQ下载", url: "https://dldir1v6.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.30_260429_x64_01.exe" },
-        { name: "国家版权中心", url: "https://register.ccopyright.com.cn/account.html?current=soft_register" },
-        { name: "河南版权中心", url: "http://hnbq.cn/henanuser/user/copyright/progress-enquiry-aplication/list" },
-    ];
-
-    function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 10); }
-
-    let links = [];            // 原始数据
-    let currentFilter = "";   // 搜索关键词
-
-    // 辅助函数
-    function isValidUrl(url) { try { let u = new URL(url); return u.protocol === "http:" || u.protocol === "https:"; } catch(e) { return false; } }
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-    function getFirstChar(name) { let s = name.trim(); if(s.length===0) return '🌐'; let first = s.charAt(0).toUpperCase(); if(/[A-Za-z0-9]/.test(first)) return first; return s.charAt(0); }
-
-    let toastTimer = null;
-    function showMessage(msg, isError=false) {
-        let toast = document.querySelector('.toast-msg');
-        if(!toast){ toast = document.createElement('div'); toast.className = 'toast-msg'; document.body.appendChild(toast); }
-        toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)';
-        toast.innerHTML = `<i class="fas ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i> ${msg}`;
-        if(toastTimer) clearTimeout(toastTimer);
-        toastTimer = setTimeout(()=>{ toast.style.opacity='0'; toast.style.transform='translateX(-50%) translateY(20px)'; }, 2500);
-    }
-
-    // 更新数据源显示
-    function updateDataSourceStatus(sourceType, message = "") {
-        const span = document.getElementById("sourceText");
-        if(sourceType === "json") span.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> 数据来源: data.json (${message})`;
-        else if(sourceType === "default") span.innerHTML = `<i class="fas fa-database" style="color:#f59e0b;"></i> 使用内置默认数据 · ${message}`;
-        else span.innerHTML = `<i class="fas fa-sync-alt"></i> ${message}`;
-    }
-
-    // 核心渲染 (带搜索过滤)
-    function renderGrid() {
-        const gridContainer = document.getElementById('linksGrid');
-        const totalSpan = document.getElementById('totalCount');
-        if(!gridContainer) return;
-        let filtered = links.filter(link => 
-            currentFilter === "" || link.name.toLowerCase().includes(currentFilter.toLowerCase()) || link.url.toLowerCase().includes(currentFilter.toLowerCase())
-        );
-        totalSpan.innerText = filtered.length;
-        if(filtered.length === 0){
-            gridContainer.innerHTML = `<div class="empty-state"><i class="fas fa-compass"></i><p>✨ 没有匹配的导航，试试其他关键词 ✨</p></div>`;
-            return;
+        let toastTimer = null;
+        function showMessage(msg, isError = false) {
+            let toast = document.querySelector('.toast-msg');
+            if (!toast) { toast = document.createElement('div'); toast.className = 'toast-msg'; document.body.appendChild(toast); }
+            toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i> ${msg}`;
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; }, 2500);
         }
-        let cardsHtml = '';
-        for(let link of filtered){
-            const displayUrl = link.url.length > 48 ? link.url.substring(0,45)+'...' : link.url;
-            const firstChar = getFirstChar(link.name);
-            const hue = (link.name.length * 13 + (link.name.charCodeAt(0)||0)) % 360;
-            const iconGrad = `linear-gradient(135deg, hsl(${hue}, 80%, 85%), hsl(${hue+25}, 75%, 78%))`;
-            cardsHtml += `
+
+        // 更新顶部状态栏（包含未保存标记）
+        function updateDataSourceStatus(sourceType, message = "") {
+            const span = document.getElementById("sourceText");
+            const unsavedSpan = document.getElementById("unsavedIndicator");
+            if (sourceType === "json") span.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> 数据来源: water_hav_data.json (${message})`;
+            else if (sourceType === "default") span.innerHTML = `<i class="fas fa-database" style="color:#f59e0b;"></i> 使用内置默认数据 · ${message}`;
+            else if (sourceType === "memory") span.innerHTML = `<i class="fas fa-memory" style="color:#8b5cf6;"></i> 内存缓存 · ${message}`;
+            else span.innerHTML = `<i class="fas fa-sync-alt"></i> ${message}`;
+
+            if (isUnsaved && sourceType !== "memory") {
+                unsavedSpan.style.display = "inline-flex";
+            } else if (isUnsaved) {
+                unsavedSpan.style.display = "inline-flex";
+            } else {
+                unsavedSpan.style.display = "none";
+            }
+            if (sourceType === "memory" && isUnsaved) unsavedSpan.style.display = "inline-flex";
+            lastLoadedSource = sourceType;
+        }
+
+        // 标记未保存修改（任何增删改操作调用）
+        function markUnsaved() {
+            if (!isUnsaved) {
+                isUnsaved = true;
+                updateDataSourceStatus(lastLoadedSource === "json" ? "json" : (lastLoadedSource === "default" ? "default" : "memory"), (lastLoadedSource === "json" ? "已修改，请导出保存" : "当前数据未导出"));
+                showMessage("数据已变更，记得导出为 water_hav_data.json 备份", false);
+            }
+        }
+
+        // 标记已保存 (导出、重置、导入、重新加载后调用)
+        function markSaved(sourceType, msgSuffix = "") {
+            isUnsaved = false;
+            updateDataSourceStatus(sourceType, msgSuffix);
+        }
+
+        // 核心渲染
+        function renderGrid() {
+            const gridContainer = document.getElementById('linksGrid');
+            const totalSpan = document.getElementById('totalCount');
+            if (!gridContainer) return;
+            let filtered = links.filter(link =>
+                currentFilter === "" || link.name.toLowerCase().includes(currentFilter.toLowerCase()) || link.url.toLowerCase().includes(currentFilter.toLowerCase())
+            );
+            totalSpan.innerText = filtered.length;
+            if (filtered.length === 0) {
+                gridContainer.innerHTML = `<div class="empty-state"><i class="fas fa-compass"></i><p>✨ 没有匹配的导航，试试其他关键词 ✨</p></div>`;
+                return;
+            }
+            let cardsHtml = '';
+            for (let link of filtered) {
+                const displayUrl = link.url.length > 48 ? link.url.substring(0, 45) + '...' : link.url;
+                const firstChar = getFirstChar(link.name);
+                const hue = (link.name.length * 13 + (link.name.charCodeAt(0) || 0)) % 360;
+                const iconGrad = `linear-gradient(135deg, hsl(${hue}, 80%, 85%), hsl(${hue + 25}, 75%, 78%))`;
+                cardsHtml += `
                 <div class="card" data-id="${escapeHtml(link.id)}" data-url="${escapeHtml(link.url)}">
                     <div class="card-icon" style="background: ${iconGrad}; color: hsl(${hue}, 60%, 35%);">${escapeHtml(firstChar)}</div>
                     <div class="card-info">
                         <div class="card-title">${escapeHtml(link.name)}</div>
                         <div class="card-url"><i class="fas fa-link"></i> ${escapeHtml(displayUrl)}</div>
                     </div>
-                    <button class="delete-btn" data-delete-id="${escapeHtml(link.id)}" title="删除"><i class="fas fa-trash-can"></i></button>
+                    <div class="card-actions">
+                        <button class="edit-btn" data-edit-id="${escapeHtml(link.id)}" title="编辑"><i class="fas fa-pen"></i></button>
+                        <button class="delete-btn" data-delete-id="${escapeHtml(link.id)}" title="删除"><i class="fas fa-trash-can"></i></button>
+                    </div>
                 </div>`;
+            }
+            gridContainer.innerHTML = cardsHtml;
         }
-        gridContainer.innerHTML = cardsHtml;
-    }
 
-    // 删除、添加等操作后刷新
-    function refreshFullUI(){ renderGrid(); }
-
-    // 删除链接
-    function deleteLinkById(id){
-        const before = links.length;
-        links = links.filter(l => l.id !== id);
-        if(links.length !== before){ refreshFullUI(); showMessage("已删除导航", false); }
-        else showMessage("删除失败", true);
-    }
-
-    // 添加新网址
-    function addNewLink(name, url){
-        let rawName = name.trim(), rawUrl = url.trim();
-        if(rawName === ""){ showMessage("请输入网站名称", true); return false; }
-        if(rawUrl === ""){ showMessage("请输入网址链接", true); return false; }
-        let finalUrl = rawUrl;
-        if(!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) finalUrl = 'https://' + rawUrl;
-        if(!isValidUrl(finalUrl)){ showMessage("网址格式无效，需包含 http:// 或 https://", true); return false; }
-        const newLink = { id: generateId(), name: rawName, url: finalUrl };
-        links.push(newLink);
-        refreshFullUI();
-        showMessage(`✅ 添加 “${rawName}”`, false);
-        return true;
-    }
-
-    // 重置默认 (内置5项)
-    function resetToDefault(){
-        links = DEFAULT_LINKS_RAW.map(l => ({ ...l, id: generateId() }));
-        refreshFullUI();
-        updateDataSourceStatus("default", "已重置为内置导航");
-        showMessage("已重置默认4个导航，记得导出备份", false);
-    }
-
-    function clearAllLinks(){
-        if(links.length === 0){ showMessage("没有导航可清空", false); return; }
-        if(confirm("⚠️ 确定要删除全部导航吗？不可撤销。")){
-            links = [];
-            refreshFullUI();
-            updateDataSourceStatus("default", "已清空，可重新添加或导入");
-            showMessage("已清空全部导航", false);
+        // 刷新UI并保持搜索状态
+        function refreshUI() {
+            renderGrid();
         }
-    }
 
-    // 导出为 data.json
-    function exportToDataJson(){
-        if(links.length === 0){ showMessage("无数据可导出", true); return; }
-        const exportData = links.map(({id, name, url}) => ({ id, name, url }));
-        const jsonStr = JSON.stringify(exportData, null, 2);
-        const blob = new Blob([jsonStr], {type:"application/json"});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = "data.json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-        showMessage(`导出 ${links.length} 个导航为 data.json`, false);
-    }
+        // 删除链接
+        function deleteLinkById(id) {
+            const before = links.length;
+            links = links.filter(l => l.id !== id);
+            if (links.length !== before) {
+                markUnsaved();
+                refreshUI();
+                showMessage("已删除导航", false);
+            } else showMessage("删除失败", true);
+        }
 
-    // 从 JSON 对象加载 (替换内存)
-    function loadLinksFromJsonArray(jsonArray){
-        if(!Array.isArray(jsonArray)) throw new Error("数据格式错误");
-        const valid = [];
-        for(let item of jsonArray){
-            if(item.name && item.url){
-                valid.push({
-                    id: item.id || generateId(),
-                    name: String(item.name),
-                    url: String(item.url)
+        // 编辑链接 (两次prompt，优雅)
+        function editLinkById(id) {
+            const link = links.find(l => l.id === id);
+            if (!link) return;
+            const newName = prompt("编辑网站名称", link.name);
+            if (newName !== null && newName.trim() !== "") {
+                const newUrlRaw = prompt("编辑网址 (需包含 http:// 或 https://)", link.url);
+                if (newUrlRaw !== null && newUrlRaw.trim() !== "") {
+                    let finalUrl = newUrlRaw.trim();
+                    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) finalUrl = 'https://' + finalUrl;
+                    if (isValidUrl(finalUrl)) {
+                        link.name = newName.trim();
+                        link.url = finalUrl;
+                        markUnsaved();
+                        refreshUI();
+                        showMessage(`✅ 已修改 “${link.name}”`, false);
+                    } else showMessage("网址无效，修改取消", true);
+                } else if (newUrlRaw === "") showMessage("网址不能为空", true);
+            } else if (newName !== null && newName.trim() === "") showMessage("名称不能为空", true);
+        }
+
+        // 添加新网址
+        function addNewLink(name, url) {
+            let rawName = name.trim(), rawUrl = url.trim();
+            if (rawName === "") { showMessage("请输入网站名称", true); return false; }
+            if (rawUrl === "") { showMessage("请输入网址链接", true); return false; }
+            let finalUrl = rawUrl;
+            if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) finalUrl = 'https://' + rawUrl;
+            if (!isValidUrl(finalUrl)) { showMessage("网址格式无效，需包含 http:// 或 https://", true); return false; }
+            const newLink = { id: generateId(), name: rawName, url: finalUrl };
+            links.push(newLink);
+            markUnsaved();
+            refreshUI();
+            showMessage(`✅ 添加 “${rawName}”`, false);
+            return true;
+        }
+
+        // 重置默认
+        function resetToDefault() {
+            links = DEFAULT_LINKS_RAW.map(l => ({ ...l, id: generateId() }));
+            refreshUI();
+            markSaved("default", "已重置为内置8个导航");
+            showMessage("已重置默认8个导航，可导出备份", false);
+        }
+
+        function clearAllLinks() {
+            if (links.length === 0) { showMessage("没有导航可清空", false); return; }
+            if (confirm("⚠️ 确定要删除全部导航吗？不可撤销。")) {
+                links = [];
+                refreshUI();
+                markSaved("memory", "已清空，可重新添加");
+                showMessage("已清空全部导航", false);
+            }
+        }
+
+        // 导出为 water_hav_data.json
+        function exportToDataJson() {
+            if (links.length === 0) { showMessage("无数据可导出", true); return; }
+            const exportData = links.map(({ id, name, url }) => ({ id, name, url }));
+            const jsonStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "water_hav_data.json";
+            a.click();
+            URL.revokeObjectURL(a.href);
+            markSaved("json", `导出成功 (${links.length}项)`);
+            showMessage(`导出 ${links.length} 个导航为 water_hav_data.json`, false);
+        }
+
+        // 从 JSON 对象加载并替换内存
+        function loadLinksFromJsonArray(jsonArray) {
+            if (!Array.isArray(jsonArray)) throw new Error("数据格式错误");
+            const valid = [];
+            for (let item of jsonArray) {
+                if (item.name && item.url) {
+                    valid.push({
+                        id: item.id || generateId(),
+                        name: String(item.name),
+                        url: String(item.url)
+                    });
+                }
+            }
+            if (valid.length === 0) throw new Error("无有效导航条目");
+            links = valid;
+            refreshUI();
+        }
+
+        // 手动导入文件
+        function manualImportJson(file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    loadLinksFromJsonArray(parsed);
+                    markSaved("json", `手动导入 (${links.length}项)`);
+                    showMessage(`✅ 导入成功，共 ${links.length} 个导航`, false);
+                } catch (err) {
+                    showMessage("JSON解析失败，请检查格式", true);
+                }
+            };
+            reader.onerror = () => showMessage("文件读取失败", true);
+            reader.readAsText(file, "UTF-8");
+        }
+
+        // 自动读取 water_hav_data.json
+        async function autoLoadDataJson() {
+            const gridContainer = document.getElementById('linksGrid');
+            if (gridContainer) gridContainer.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>正在读取 water_hav_data.json ...</p></div>`;
+            try {
+                const response = await fetch(`water_hav_data.json?t=${Date.now()}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const jsonData = await response.json();
+                loadLinksFromJsonArray(jsonData);
+                markSaved("json", `同步成功 · ${links.length}项`);
+                showMessage(`✅ 成功加载 water_hav_data.json (${links.length}个站点)`, false);
+            } catch (err) {
+                console.warn("自动读取 water_hav_data.json 失败:", err);
+                links = DEFAULT_LINKS_RAW.map(l => ({ ...l, id: generateId() }));
+                refreshUI();
+                let errorDetail = (err.message || "未知错误");
+                if (window.location.protocol === 'file:') errorDetail = "本地文件协议受限，请使用「手动导入」或部署到本地服务器";
+                markSaved("default", `自动读取失败 (${errorDetail})，使用默认导航`);
+                showMessage(`⚠️ 未读取到 water_hav_data.json，已加载默认8个导航。可点击「重新加载」或手动导入`, false);
+            }
+        }
+
+        // 强制重试加载 water_hav_data.json
+        async function retryFetch() {
+            showMessage("正在重新请求 water_hav_data.json ...", false);
+            try {
+                const response = await fetch(`./global-static/json/water_hav_data.json?t=${Date.now()}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const jsonData = await response.json();
+                loadLinksFromJsonArray(jsonData);
+                markSaved("json", `重载成功 (${links.length}项)`);
+                showMessage(`✅ 重载成功，已更新 ${links.length} 个导航`, false);
+            } catch (err) {
+                showMessage(`重载失败: ${err.message} , 请手动导入`, true);
+                if (links.length === 0) {
+                    links = DEFAULT_LINKS_RAW.map(l => ({ ...l, id: generateId() }));
+                    refreshUI();
+                    markSaved("default", "加载失败，已回退默认");
+                } else {
+                    markUnsaved();
+                    updateDataSourceStatus(lastLoadedSource, "重载失败，当前数据保留");
+                }
+            }
+        }
+
+        // 全局事件委托
+        function bindEvents() {
+            const grid = document.getElementById('linksGrid');
+            if (grid) {
+                grid.addEventListener('click', (e) => {
+                    // 编辑按钮
+                    const editBtn = e.target.closest('.edit-btn');
+                    if (editBtn) {
+                        e.stopPropagation();
+                        const editId = editBtn.getAttribute('data-edit-id');
+                        if (editId) editLinkById(editId);
+                        return;
+                    }
+                    // 删除按钮
+                    const delBtn = e.target.closest('.delete-btn');
+                    if (delBtn) {
+                        e.stopPropagation();
+                        const delId = delBtn.getAttribute('data-delete-id');
+                        if (delId) deleteLinkById(delId);
+                        return;
+                    }
+                    // 打开卡片链接
+                    const card = e.target.closest('.card');
+                    if (card) {
+                        const url = card.getAttribute('data-url');
+                        if (url && isValidUrl(url)) window.open(url, '_blank', 'noopener');
+                        else showMessage("链接无效", true);
+                    }
                 });
             }
-        }
-        if(valid.length === 0) throw new Error("无有效导航条目");
-        links = valid;
-        refreshFullUI();
-    }
-
-    // 手动导入文件
-    function manualImportJson(file){
-        const reader = new FileReader();
-        reader.onload = function(e){
-            try{
-                const parsed = JSON.parse(e.target.result);
-                loadLinksFromJsonArray(parsed);
-                showMessage(`✅ 导入成功，共 ${links.length} 个导航`, false);
-                updateDataSourceStatus("json", `手动导入 (${links.length}项)`);
-            }catch(err){
-                showMessage("JSON解析失败，请检查格式", true);
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    currentFilter = e.target.value;
+                    renderGrid();
+                });
             }
-        };
-        reader.onerror = ()=>showMessage("文件读取失败", true);
-        reader.readAsText(file, "UTF-8");
-    }
-
-    // ---------- 自动读取 data.json (增强版，fetch + 详细错误处理) ----------
-    async function autoLoadDataJson(){
-        const gridContainer = document.getElementById('linksGrid');
-        if(gridContainer) gridContainer.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>正在读取 data.json ...</p></div>`;
-        try{
-            // 添加随机参数避免缓存，但路径不变
-            const response = await fetch(`data.json?t=${Date.now()}`);
-            if(!response.ok) throw new Error(`HTTP ${response.status}`);
-            const jsonData = await response.json();
-            await loadLinksFromJsonArray(jsonData);
-            showMessage(`✅ 成功加载 data.json (${links.length}个站点)`, false);
-            updateDataSourceStatus("json", `同步成功 · ${links.length}项`);
-        } catch(err){
-            console.warn("自动读取 data.json 失败:", err);
-            // 回退到内置5项默认
-            links = DEFAULT_LINKS_RAW.map(l => ({ ...l, id: generateId() }));
-            refreshFullUI();
-            let errorDetail = (err.message || "未知错误");
-            if(window.location.protocol === 'file:') errorDetail = "本地文件协议受限，请使用「手动导入」或部署到本地服务器";
-            updateDataSourceStatus("default", `自动读取失败 (${errorDetail})，使用默认导航`);
-            showMessage(`⚠️ 未读取到 data.json，已加载默认4个导航。可点击「重新加载」或手动导入`, false);
-        }
-    }
-
-    // 强制重试 fetch (用户主动)
-    async function retryFetch(){
-        showMessage("正在重新请求 data.json ...", false);
-        try{
-            const response = await fetch(`data.json?t=${Date.now()}`);
-            if(!response.ok) throw new Error(`HTTP ${response.status}`);
-            const jsonData = await response.json();
-            await loadLinksFromJsonArray(jsonData);
-            showMessage(`✅ 重载成功，已更新 ${links.length} 个导航`, false);
-            updateDataSourceStatus("json", `重载成功 (${links.length}项)`);
-        }catch(err){
-            showMessage(`重载失败: ${err.message} , 请手动导入`, true);
-            updateDataSourceStatus("default", "重载失败，当前为内置/已有数据");
-        }
-    }
-
-    // 事件绑定 (全局委托)
-    function bindEvents(){
-        const grid = document.getElementById('linksGrid');
-        if(grid){
-            grid.addEventListener('click', (e)=>{
-                const delBtn = e.target.closest('.delete-btn');
-                if(delBtn){
-                    e.stopPropagation();
-                    const delId = delBtn.getAttribute('data-delete-id');
-                    if(delId) deleteLinkById(delId);
-                    return;
-                }
-                const card = e.target.closest('.card');
-                if(card){
-                    const url = card.getAttribute('data-url');
-                    if(url && isValidUrl(url)) window.open(url, '_blank', 'noopener');
-                    else showMessage("链接无效", true);
+            document.getElementById('addBtn')?.addEventListener('click', () => {
+                const name = document.getElementById('siteName').value;
+                const url = document.getElementById('siteUrl').value;
+                if (addNewLink(name, url)) {
+                    document.getElementById('siteName').value = '';
+                    document.getElementById('siteUrl').value = '';
                 }
             });
-        }
-        // 搜索监听
-        const searchInput = document.getElementById('searchInput');
-        if(searchInput){
-            searchInput.addEventListener('input', (e)=>{
-                currentFilter = e.target.value;
-                renderGrid();
+            document.getElementById('resetDefaultBtn')?.addEventListener('click', () => {
+                if (confirm("重置将使用内置8个导航，是否继续？")) resetToDefault();
             });
+            document.getElementById('clearAllBtn')?.addEventListener('click', clearAllLinks);
+            document.getElementById('exportJsonBtn')?.addEventListener('click', exportToDataJson);
+            document.getElementById('retryFetchBtn')?.addEventListener('click', retryFetch);
+            const quickManual = document.getElementById('quickManualBtn');
+            const fileInput = document.getElementById('jsonFileInput');
+            quickManual?.addEventListener('click', () => { fileInput.value = ''; fileInput.click(); });
+            fileInput?.addEventListener('change', (e) => {
+                if (fileInput.files && fileInput.files.length) manualImportJson(fileInput.files[0]);
+                fileInput.value = '';
+            });
+            const nameInp = document.getElementById('siteName'), urlInp = document.getElementById('siteUrl');
+            const handleEnter = () => { const name = nameInp.value, url = urlInp.value; if (addNewLink(name, url)) { nameInp.value = ''; urlInp.value = ''; } };
+            nameInp?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleEnter(); });
+            urlInp?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleEnter(); });
         }
-        // 按钮监听
-        document.getElementById('addBtn')?.addEventListener('click', ()=>{
-            const name = document.getElementById('siteName').value;
-            const url = document.getElementById('siteUrl').value;
-            if(addNewLink(name, url)){
-                document.getElementById('siteName').value = '';
-                document.getElementById('siteUrl').value = '';
-            }
-        });
-        document.getElementById('resetDefaultBtn')?.addEventListener('click', ()=>{
-            if(confirm("重置将使用内置五个导航，是否继续？")) resetToDefault();
-        });
-        document.getElementById('clearAllBtn')?.addEventListener('click', clearAllLinks);
-        document.getElementById('exportJsonBtn')?.addEventListener('click', exportToDataJson);
-        document.getElementById('retryFetchBtn')?.addEventListener('click', retryFetch);
-        const quickManual = document.getElementById('quickManualBtn');
-        const fileInput = document.getElementById('jsonFileInput');
-        quickManual?.addEventListener('click', ()=>{ fileInput.value = ''; fileInput.click(); });
-        document.getElementById('forceImportBtn')?.addEventListener?.('click', ()=>{ fileInput.click(); }); // 兼容原版
-        fileInput?.addEventListener('change', (e)=>{
-            if(fileInput.files && fileInput.files.length) manualImportJson(fileInput.files[0]);
-            fileInput.value = '';
-        });
-        // 回车添加
-        const nameInp = document.getElementById('siteName'), urlInp = document.getElementById('siteUrl');
-        const handleEnter = () => { const name = nameInp.value, url = urlInp.value; if(addNewLink(name, url)){ nameInp.value=''; urlInp.value=''; } };
-        nameInp?.addEventListener('keypress', (e)=>{ if(e.key==='Enter') handleEnter(); });
-        urlInp?.addEventListener('keypress', (e)=>{ if(e.key==='Enter') handleEnter(); });
-    }
 
-    // 复制相关函数（保持原功能）
-    window.copyContent = function(btn){
-        const kTag = btn.parentElement.querySelector('k');
-        if(!kTag) return;
-        navigator.clipboard.writeText(kTag.innerText).then(()=>{
-            const origin = btn.innerText;
-            btn.innerText = "已复制"; btn.classList.add("copied");
-            setTimeout(()=>{ btn.innerText = origin; btn.classList.remove("copied"); }, 1500);
-        }).catch(()=>alert("复制失败"));
-    };
-    window.copyPassword = function(btn){
-        const kTag = btn.parentElement.querySelector('k');
-        const realPass = kTag.getAttribute('data-value');
-        if(realPass){
-            navigator.clipboard.writeText(realPass).then(()=>{
+        // 复制相关函数（保持原功能）
+        window.copyContent = function (btn) {
+            const kTag = btn.parentElement.querySelector('k');
+            if (!kTag) return;
+            navigator.clipboard.writeText(kTag.innerText).then(() => {
                 const origin = btn.innerText;
                 btn.innerText = "已复制"; btn.classList.add("copied");
-                setTimeout(()=>{ btn.innerText = origin; btn.classList.remove("copied"); }, 1500);
-            }).catch(()=>alert("复制失败"));
-        }
-    };
+                setTimeout(() => { btn.innerText = origin; btn.classList.remove("copied"); }, 1500);
+            }).catch(() => alert("复制失败"));
+        };
+        window.copyPassword = function (btn) {
+            const kTag = btn.parentElement.querySelector('k');
+            const realPass = kTag.getAttribute('data-value');
+            if (realPass) {
+                navigator.clipboard.writeText(realPass).then(() => {
+                    const origin = btn.innerText;
+                    btn.innerText = "已复制"; btn.classList.add("copied");
+                    setTimeout(() => { btn.innerText = origin; btn.classList.remove("copied"); }, 1500);
+                }).catch(() => alert("复制失败"));
+            }
+        };
 
-    // 初始化
-    async function init(){
-        bindEvents();
-        await autoLoadDataJson();   // 自动读取同目录 data.json
-    }
-    init();
-</script>
+        async function init() {
+            bindEvents();
+            await autoLoadDataJson();   // 尝试加载 water_hav_data.json
+        }
+        init();
+    </script>
 </body>
+
 </html>
