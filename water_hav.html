@@ -807,7 +807,7 @@
             const gridContainer = document.getElementById('linksGrid');
             if (gridContainer) gridContainer.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-pulse"></i><p>正在读取 water_hav_data.json ...</p></div>`;
             try {
-                const response = await fetch(`./global-static/json/water_hav_data.json?t=${Date.now()}`);
+                const response = await fetch(`./water_hav/water_hav_data.json?t=${Date.now()}`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const jsonData = await response.json();
                 loadLinksFromJsonArray(jsonData);
@@ -828,7 +828,7 @@
         async function retryFetch() {
             showMessage("正在重新请求 water_hav_data.json ...", false);
             try {
-                const response = await fetch(`./global-static/json/water_hav_data.json?t=${Date.now()}`);
+                const response = await fetch(`./water_hav/water_hav_data.json?t=${Date.now()}`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const jsonData = await response.json();
                 loadLinksFromJsonArray(jsonData);
